@@ -1,2 +1,0 @@
-[console_scripts]
-tunnex_2 = tunnex_2.main:tunnex_2_cli
