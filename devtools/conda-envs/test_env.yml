@@ -1,0 +1,8 @@
+name: tunnex_2
+channels:
+  - diffpy
+  - defaults
+dependencies:
+  - python=3.13
+  - pyyaml
+prefix: D:\Anaconda\envs\tunnex_2
