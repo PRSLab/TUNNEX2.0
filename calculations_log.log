@@ -1,0 +1,10 @@
+2026-10-11 18:18:08 [INFO] ================================================================================
+2026-10-11 18:18:08 [INFO] Starting calculation: .\data\WKB_261002b_CH3COH_B3LYP_6-311++G_gaussian_input.txt
+2026-10-11 18:18:08 [INFO] ================================================================================
+2026-10-11 18:18:08 [WARNING] A potential ZPVE outlier was found at IRC=-2.296. Outlier value = 0.0485. Please check your data.
+2026-10-11 18:18:09 [INFO] Results were saved to: D:\python_projects\tunnex_2\tunnex_2_v0p8p2\data\WKB_261002b_CH3COH_B3LYP_6-311++G_gaussian_input_tunnex_2.out.
+2026-10-11 18:18:27 [INFO] ================================================================================
+2026-10-11 18:18:27 [INFO] Starting calculation: .\data\WKB_261002b_CH3COH_B3LYP_6-311++G_gaussian_input.txt
+2026-10-11 18:18:27 [INFO] ================================================================================
+2026-10-11 18:18:27 [WARNING] A potential ZPVE outlier was found at IRC=-2.296. Outlier value = 0.0485. Please check your data.
+2026-10-11 18:18:28 [INFO] Results were saved to: D:\python_projects\tunnex_2\tunnex_2_v0p8p2\data\WKB_261002b_CH3COH_B3LYP_6-311++G_gaussian_input_tunnex_2.out.
