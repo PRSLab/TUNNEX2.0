@@ -10,6 +10,27 @@ Once installed, you can use the `Makefile` in this directory to compile static H
 make html
 ```
 
+Install the dependencies (conda):
+
+```bash
+conda install -c conda-forge sphinx pydata-sphinx-theme sphinx-design sphinx-copybutton
+```
+
+or with pip:
+
+```bash
+pip install sphinx pydata-sphinx-theme sphinx-design sphinx-copybutton
+```
+
+The package itself must be importable, e.g. install it in development mode
+from the repository root: `pip install -e .`
+
+On Windows use `make.bat html` or call Sphinx directly:
+
+```bash
+sphinx-build -b html . _build/html
+```
+
 The documentation contains default pages for "Getting Started", "User Guide", "Developer Guide" and API reference. 
 We recommend adopting these sections of documentation for your project to ensure comprehensive documentation for all aspects of your project.
 

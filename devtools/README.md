@@ -1,56 +1,43 @@
-# Development, testing, and deployment tools
+# Development and testing tools
 
-This directory contains a collection of tools for running Continuous Integration (CI) tests, 
-conda installation, and other development tools not directly related to the coding process.
+This directory contains helper files for testing the project and setting up conda environments.
 
+## Contents
 
-## Manifest
+* `conda-envs/` - YAML files describing conda environments
+  * `environment.yml` - snapshot of the development environment (`tunnex_2`), exported with `conda env export --from-history`
+  * `test_env.yml` - environment used for testing (Python, pytest, pytest-cov, codecov, and the project dependencies)
+* `scripts/`
+  * `create_conda_env.py` - creates a conda environment from a YAML file with a given name and Python version
 
-### Continuous Integration
+## Creating the test environment
 
-You should test your code, but do not feel compelled to use these specific programs. You also may not need Unix and 
-Windows testing if you only plan to deploy on specific platforms. These are just to help you get started.
+The script requires PyYAML (`conda install pyyaml`).
 
-### Conda Environment:
-
-This directory contains the files to setup the Conda environment for testing purposes
-
-* `conda-envs`: directory containing the YAML file(s) which fully describe Conda Environments, their dependencies, and those dependency provenance's
-  * `test_env.yaml`: Simple test environment file with base dependencies. Channels are not specified here and therefore respect global Conda configuration
-  
-### Additional Scripts:
-
-This directory contains OS agnostic helper scripts which don't fall in any of the previous categories
-* `scripts`
-  * `create_conda_env.py`: Helper program for spinning up new conda environments based on a starter file with Python Version and Env. Name command-line options
-
-
-## How to contribute changes
-- Clone the repository if you have write access to the main repo, fork the repository if you are a collaborator.
-- Make a new branch with `git checkout -b {your branch name}`
-- Make changes and test your code
-- Ensure that the test environment dependencies (`conda-envs`) line up with the build and deploy dependencies (`conda-recipe/meta.yaml`)
-- Push the branch to the repo (either the main or your fork) with `git push -u origin {your branch name}`
-  * Note that `origin` is the default name assigned to the remote, yours may be different
-- Make a PR on GitHub with your changes
-- We'll review the changes and get your code into the repo after lively discussion!
-
-
-## Checklist for updates
-- [ ] Make sure there is an/are issue(s) opened for your specific update
-- [ ] Create the PR, referencing the issue
-- [ ] Debug the PR as needed until tests pass
-- [ ] Tag the final, debugged version 
-   *  `git tag -a X.Y.Z [latest pushed commit] && git push --follow-tags`
-- [ ] Get the PR merged in
-
-## Versioneer Auto-version
-[Versioneer](https://github.com/warner/python-versioneer) will automatically infer what version 
-is installed by looking at the `git` tags and how many commits ahead this version is. The format follows 
-[PEP 440](https://www.python.org/dev/peps/pep-0440/) and has the regular expression of:
-```regexp
-\d+.\d+.\d+(?\+\d+-[a-z0-9]+)
+```bash
+python devtools/scripts/create_conda_env.py -n test -p 3.13 devtools/conda-envs/test_env.yml
+conda activate test
+pytest
 ```
-If the version of this commit is the same as a `git` tag, the installed version is the same as the tag, 
-e.g. `tunnex-0.1.2`, otherwise it will be appended with `+X` where `X` is the number of commits 
-ahead from the last tag, and then `-YYYYYY` where the `Y`'s are replaced with the `git` commit hash.
+
+The script replaces the `python` entry in the YAML file with the requested version and calls `conda env create`.
+The original YAML file is not modified.
+
+## Updating the environment snapshot
+
+```bash
+conda activate tunnex_2
+conda env export --from-history -f devtools/conda-envs/environment.yml
+```
+
+Use the `-f` flag instead of `>` redirection: in Windows PowerShell, `>` writes UTF-16, which PyYAML cannot read.
+Packages installed via `pip` are not included in `--from-history` output; add them to a `pip:` block manually.
+
+## Versioning
+
+The package version is determined automatically by [Versioneer](https://github.com/warner/python-versioneer)
+from git tags. To set a version, create a tag:
+
+```bash
+git tag -a 0.1.0 -m "first version"
+```

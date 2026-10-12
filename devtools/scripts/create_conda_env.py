@@ -8,11 +8,11 @@ from tempfile import TemporaryDirectory
 from contextlib import contextmanager
 # YAML imports
 try:
-    import yaml  # PyYAML
+    import yaml  # PyYAML  # type: ignore
     loader = yaml.safe_load
 except ImportError:
     try:
-        import ruamel_yaml as yaml  # Ruamel YAML
+        import ruamel_yaml as yaml  # Ruamel YAML  # type: ignore
     except ImportError:
         try:
             # Load Ruamel YAML from the base conda environment

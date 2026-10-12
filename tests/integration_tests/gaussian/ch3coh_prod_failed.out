@@ -1,0 +1,219 @@
+ Entering Gaussian System, Link 0=g16
+ Initial command:
+ /trinity/shared/software/gaussian/g16_C02/g16/l1.exe "/scratch/pavez96/g16_26137522/Gau-4022951.inp" -scrdir="/scratch/pavez96/g16_26137522/"
+ Entering Link 1 = /trinity/shared/software/gaussian/g16_C02/g16/l1.exe PID=   4022952.
+  
+ Copyright (c) 1988-2021, Gaussian, Inc.  All Rights Reserved.
+  
+ This is part of the Gaussian(R) 16 program.  It is based on
+ the Gaussian(R) 09 system (copyright 2009, Gaussian, Inc.),
+ the Gaussian(R) 03 system (copyright 2003, Gaussian, Inc.),
+ the Gaussian(R) 98 system (copyright 1998, Gaussian, Inc.),
+ the Gaussian(R) 94 system (copyright 1995, Gaussian, Inc.),
+ the Gaussian 92(TM) system (copyright 1992, Gaussian, Inc.),
+ the Gaussian 90(TM) system (copyright 1990, Gaussian, Inc.),
+ the Gaussian 88(TM) system (copyright 1988, Gaussian, Inc.),
+ the Gaussian 86(TM) system (copyright 1986, Carnegie Mellon
+ University), and the Gaussian 82(TM) system (copyright 1983,
+ Carnegie Mellon University). Gaussian is a federally registered
+ trademark of Gaussian, Inc.
+  
+ This software contains proprietary and confidential information,
+ including trade secrets, belonging to Gaussian, Inc.
+  
+ This software is provided under written license and may be
+ used, copied, transmitted, or stored only in accord with that
+ written license.
+  
+ The following legend is applicable only to US Government
+ contracts under FAR:
+  
+                    RESTRICTED RIGHTS LEGEND
+  
+ Use, reproduction and disclosure by the US Government is
+ subject to restrictions as set forth in subparagraphs (a)
+ and (c) of the Commercial Computer Software - Restricted
+ Rights clause in FAR 52.227-19.
+  
+ Gaussian, Inc.
+ 340 Quinnipiac St., Bldg. 40, Wallingford CT 06492
+  
+  
+ ---------------------------------------------------------------
+ Warning -- This program may not be used in any manner that
+ competes with the business of Gaussian, Inc. or will provide
+ assistance to any competitor of Gaussian, Inc.  The licensee
+ of this program is prohibited from giving any competitor of
+ Gaussian, Inc. access to this program.  By using this program,
+ the user acknowledges that Gaussian, Inc. is engaged in the
+ business of creating and licensing software in the field of
+ computational chemistry and represents and warrants to the
+ licensee that it is not a competitor of Gaussian, Inc. and that
+ it will not use this program in any manner prohibited above.
+ ---------------------------------------------------------------
+  
+
+ Cite this work as:
+ Gaussian 16, Revision C.02,
+ M. J. Frisch, G. W. Trucks, H. B. Schlegel, G. E. Scuseria, 
+ M. A. Robb, J. R. Cheeseman, G. Scalmani, V. Barone, 
+ G. A. Petersson, H. Nakatsuji, X. Li, M. Caricato, A. V. Marenich, 
+ J. Bloino, B. G. Janesko, R. Gomperts, B. Mennucci, H. P. Hratchian, 
+ J. V. Ortiz, A. F. Izmaylov, J. L. Sonnenberg, D. Williams-Young, 
+ F. Ding, F. Lipparini, F. Egidi, J. Goings, B. Peng, A. Petrone, 
+ T. Henderson, D. Ranasinghe, V. G. Zakrzewski, J. Gao, N. Rega, 
+ G. Zheng, W. Liang, M. Hada, M. Ehara, K. Toyota, R. Fukuda, 
+ J. Hasegawa, M. Ishida, T. Nakajima, Y. Honda, O. Kitao, H. Nakai, 
+ T. Vreven, K. Throssell, J. A. Montgomery, Jr., J. E. Peralta, 
+ F. Ogliaro, M. J. Bearpark, J. J. Heyd, E. N. Brothers, K. N. Kudin, 
+ V. N. Staroverov, T. A. Keith, R. Kobayashi, J. Normand, 
+ K. Raghavachari, A. P. Rendell, J. C. Burant, S. S. Iyengar, 
+ J. Tomasi, M. Cossi, J. M. Millam, M. Klene, C. Adamo, R. Cammi, 
+ J. W. Ochterski, R. L. Martin, K. Morokuma, O. Farkas, 
+ J. B. Foresman, and D. J. Fox, Gaussian, Inc., Wallingford CT, 2019.
+ 
+ ******************************************
+ Gaussian 16:  ES64L-G16RevC.02  7-Dec-2021
+                24-Jul-2026 
+ ******************************************
+ %mem=6GB
+ %nprocs=4
+ Will use up to    4 processors via shared memory.
+ ----------------------------------
+ #p B3LYP/6-311++G Opt freq=NoRaman
+ ----------------------------------
+ 1/18=20,19=15,26=3,38=1/1,3;
+ 2/9=110,12=2,17=6,18=5,40=1/2;
+ 3/5=4,6=6,7=1010,11=2,25=1,30=1,71=1,74=-5/1,2,3;
+ 4//1;
+ 5/5=2,38=5/2;
+ 6/7=2,8=2,9=2,10=2,28=1/1;
+ 7//1,2,3,16;
+ 1/18=20,19=15,26=3/3(2);
+ 2/9=110/2;
+ 99//99;
+ 2/9=110/2;
+ 3/5=4,6=6,7=1010,11=2,25=1,30=1,71=1,74=-5/1,2,3;
+ 4/5=5,16=3,69=1/1;
+ 5/5=2,38=5/2;
+ 7//1,2,3,16;
+ 1/18=20,19=15,26=3/3(-5);
+ 2/9=110/2;
+ 6/7=2,8=2,9=2,10=2,19=2,28=1/1;
+ 99/9=1/99;
+ Leave Link    1 at Fri Jul 24 11:32:43 2026, MaxMem=   805306368 cpu:               0.0 elap:               0.4
+ (Enter /trinity/shared/software/gaussian/g16_C02/g16/l101.exe)
+ -------
+ Comment
+ -------
+ Symbolic Z-matrix:
+ Charge =  0 Multiplicity = 1
+ 6                     0.11723   0.58689   0. 
+ 8                    -1.08638   0.04414   0. 
+ 6                     1.1203   -0.51812   0. 
+ 1                    -1.74207   0.75482   0. 
+ 1                     0.70435  -1.5334    0. 
+ 1                     1.77218  -0.37039   0.86931 
+ 1                     1.77218  -0.37039  -0.86931 
+ 
+ ITRead=  0  0  0  0  0  0  0
+ MicOpt= -1 -1 -1 -1 -1 -1 -1
+ NAtoms=      7 NQM=        7 NQMF=       0 NMMI=      0 NMMIF=      0
+                NMic=       0 NMicF=      0.
+                    Isotopes and Nuclear Properties:
+ (Nuclear quadrupole moments (NQMom) in fm**2, nuclear magnetic moments (NMagM)
+  in nuclear magnetons)
+
+  Atom         1           2           3           4           5           6           7
+ IAtWgt=          12          16          12           1           1           1           1
+ AtmWgt=  12.0000000  15.9949146  12.0000000   1.0078250   1.0078250   1.0078250   1.0078250
+ NucSpn=           0           0           0           1           1           1           1
+ AtZEff=   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000
+ NQMom=    0.0000000   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000
+ NMagM=    0.0000000   0.0000000   0.0000000   2.7928460   2.7928460   2.7928460   2.7928460
+ AtZNuc=   6.0000000   8.0000000   6.0000000   1.0000000   1.0000000   1.0000000   1.0000000
+ Leave Link  101 at Fri Jul 24 11:32:43 2026, MaxMem=   805306368 cpu:               0.1 elap:               0.2
+ (Enter /trinity/shared/software/gaussian/g16_C02/g16/l103.exe)
+
+ GradGradGradGradGradGradGradGradGradGradGradGradGradGradGradGradGradGrad
+ Berny optimization.
+ Initialization pass.
+                           ----------------------------
+                           !    Initial Parameters    !
+                           ! (Angstroms and Degrees)  !
+ --------------------------                            --------------------------
+ ! Name  Definition              Value          Derivative Info.                !
+ --------------------------------------------------------------------------------
+ ! R1    R(1,2)                  1.3203         estimate D2E/DX2                !
+ ! R2    R(1,3)                  1.4924         estimate D2E/DX2                !
+ ! R3    R(2,4)                  0.967          estimate D2E/DX2                !
+ ! R4    R(3,5)                  1.0972         estimate D2E/DX2                !
+ ! R5    R(3,6)                  1.0966         estimate D2E/DX2                !
+ ! R6    R(3,7)                  1.0966         estimate D2E/DX2                !
+ ! A1    A(2,1,3)              107.9593         estimate D2E/DX2                !
+ ! A2    A(1,2,4)              108.4227         estimate D2E/DX2                !
+ ! A3    A(1,3,5)              115.49           estimate D2E/DX2                !
+ ! A4    A(1,3,6)              107.4462         estimate D2E/DX2                !
+ ! A5    A(1,3,7)              107.4462         estimate D2E/DX2                !
+ ! A6    A(5,3,6)              110.4893         estimate D2E/DX2                !
+ ! A7    A(5,3,7)              110.4893         estimate D2E/DX2                !
+ ! A8    A(6,3,7)              104.8868         estimate D2E/DX2                !
+ ! D1    D(3,1,2,4)            180.0            estimate D2E/DX2                !
+ ! D2    D(2,1,3,5)              0.0            estimate D2E/DX2                !
+ ! D3    D(2,1,3,6)           -123.8007         estimate D2E/DX2                !
+ ! D4    D(2,1,3,7)            123.8007         estimate D2E/DX2                !
+ --------------------------------------------------------------------------------
+ Trust Radius=3.00D-01 FncErr=1.00D-07 GrdErr=1.00D-06 EigMax=2.50D+02 EigMin=1.00D-04
+ Number of steps in this run=     28 maximum allowed number of steps=    100.
+ GradGradGradGradGradGradGradGradGradGradGradGradGradGradGradGradGradGrad
+
+ Leave Link  103 at Fri Jul 24 11:32:43 2026, MaxMem=   805306368 cpu:               0.0 elap:               0.0
+ (Enter /trinity/shared/software/gaussian/g16_C02/g16/l202.exe)
+                          Input orientation:                          
+ ---------------------------------------------------------------------
+ Center     Atomic      Atomic             Coordinates (Angstroms)
+ Number     Number       Type             X           Y           Z
+ ---------------------------------------------------------------------
+      1          6           0        0.117226    0.586889    0.000000
+      2          8           0       -1.086379    0.044138    0.000000
+      3          6           0        1.120299   -0.518117    0.000000
+      4          1           0       -1.742066    0.754821    0.000000
+      5          1           0        0.704348   -1.533404    0.000000
+      6          1           0        1.772182   -0.370385    0.869314
+      7          1           0        1.772182   -0.370385   -0.869314
+ ---------------------------------------------------------------------
+                    Distance matrix (angstroms):
+                    1          2          3          4          5
+     1  C    0.000000
+     2  O    1.320320   0.000000
+     3  C    1.492379   2.277182   0.000000
+     4  H    1.866860   0.966952   3.132651   0.000000
+     5  H    2.200081   2.386492   1.097189   3.349763   0.000000
+     6  H    2.100228   3.016439   1.096578   3.791007   1.802384
+     7  H    2.100228   3.016439   1.096578   3.791007   1.802384
+                    6          7
+     6  H    0.000000
+     7  H    1.738628   0.000000
+ Stoichiometry    C2H4O
+ Framework group  CS[SG(C2H2O),X(H2)]
+ Deg. of freedom    10
+ Full point group                 CS      NOp   2
+ Largest Abelian subgroup         CS      NOp   2
+ Largest concise Abelian subgroup CS      NOp   2
+                         Standard orientation:                         
+ ---------------------------------------------------------------------
+ Center     Atomic      Atomic             Coordinates (Angstroms)
+ Number     Number       Type             X           Y           Z
+ ---------------------------------------------------------------------
+      1          6           0        0.000000    0.621752    0.000000
+      2          8           0       -1.139700   -0.044826    0.000000
+      3          6           0        1.113945   -0.371384    0.000000
+      4          1           0       -1.866636    0.592795    0.000000
+      5          1           0        0.807313   -1.424855    0.000000
+      6          1           0        1.746628   -0.155772    0.869314
+      7          1           0        1.746628   -0.155772   -0.869314
+ ---------------------------------------------------------------------
+ Rotational constants (GHZ):          55.9978828          10.3944831           9.2562949
+ 
+Error termination request processed by link 9999.
+ Error termination via Lnk1e in /disc30/g98/l9999.exe.
