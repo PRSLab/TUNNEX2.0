@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tunnex_2"
+version = "0.8.3"
+description = "Python version of TUNNEX for computing WKB tunneling rates"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [{name = "Pavel Zasimov", email = "pavel.zasimov@uni-giessen.de"}]
+requires-python = ">=3.10"
+
+dependencies = [
+    "numpy",
+    "scipy",
+]
+
+[project.optional-dependencies]
+test = ["pytest", "pytest-cov"]
+docs = [
+    "sphinx",
+    "pydata-sphinx-theme",
+    "sphinx-design",
+    "sphinx-copybutton",
+]
+
+[project.scripts]
+tunnex_2 = "tunnex_2.cli:cli"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["tunnex_2*"]
+
+[tool.pytest.ini_options]
+markers = ["integration: marks tests as integration tests",
+           "e2e: end-to-end tests of the installed command"]

@@ -1,0 +1,77 @@
+2026-10-11 18:18:08 [INFO] ================================================================================
+2026-10-11 18:18:08 [INFO] Starting calculation: .\data\WKB_261002b_CH3COH_B3LYP_6-311++G_gaussian_input.txt
+2026-10-11 18:18:08 [INFO] ================================================================================
+2026-10-11 18:18:08 [WARNING] A potential ZPVE outlier was found at IRC=-2.296. Outlier value = 0.0485. Please check your data.
+2026-10-11 18:18:09 [INFO] Results were saved to: D:\python_projects\tunnex_2\tunnex_2_v0p8p2\data\WKB_261002b_CH3COH_B3LYP_6-311++G_gaussian_input_tunnex_2.out.
+2026-10-11 18:18:27 [INFO] ================================================================================
+2026-10-11 18:18:27 [INFO] Starting calculation: .\data\WKB_261002b_CH3COH_B3LYP_6-311++G_gaussian_input.txt
+2026-10-11 18:18:27 [INFO] ================================================================================
+2026-10-11 18:18:27 [WARNING] A potential ZPVE outlier was found at IRC=-2.296. Outlier value = 0.0485. Please check your data.
+2026-10-11 18:18:28 [INFO] Results were saved to: D:\python_projects\tunnex_2\tunnex_2_v0p8p2\data\WKB_261002b_CH3COH_B3LYP_6-311++G_gaussian_input_tunnex_2.out.2026-10-11 18:23:10 [INFO] ================================================================================
+2026-10-11 18:23:10 [INFO] Starting calculation: .\data\WKB_261002b_CH3COH_B3LYP_6-311++G_gaussian_input.txt
+2026-10-11 18:23:10 [INFO] ================================================================================
+2026-10-11 18:23:10 [WARNING] A potential ZPVE outlier was found at IRC=-2.296. Outlier value = 0.0485. Please check your data.
+2026-10-11 18:23:10 [INFO] Results were saved to: D:\python_projects\tunnex_2\tunnex_2_v0p8p3\data\WKB_261002b_CH3COH_B3LYP_6-311++G_gaussian_input_tunnex_2.out.
+2026-10-11 18:23:13 [INFO] ================================================================================
+2026-10-11 18:23:13 [INFO] Starting calculation: .\data\WKB_261002b_CH3COH_B3LYP_6-311++G_gaussian_input.txt
+2026-10-11 18:23:13 [INFO] ================================================================================
+2026-10-11 18:23:13 [WARNING] A potential ZPVE outlier was found at IRC=-2.296. Outlier value = 0.0485. Please check your data.
+2026-10-11 18:23:13 [INFO] Results were saved to: D:\python_projects\tunnex_2\tunnex_2_v0p8p3\data\WKB_261002b_CH3COH_B3LYP_6-311++G_gaussian_input_tunnex_2.out.
+2026-10-12 14:28:21 [INFO] ================================================================================
+2026-10-12 14:28:21 [INFO] Starting calculation: .\ch3coh_backward_gaussian.txt
+2026-10-12 14:28:21 [INFO] ================================================================================
+2026-10-12 14:28:21 [WARNING] A potential ZPVE outlier was found at IRC=-2.296. Outlier value = 0.0485. Please check your data.
+2026-10-12 14:28:21 [INFO] Results were saved to: D:\python_projects\tunnex_2\tunnex_2_v0p8p3\ch3coh_backward_gaussian_tunnex_2.out.
+2026-10-12 14:32:08 [INFO] Results were saved to: C:\Users\4702306\AppData\Local\Temp\pytest-of-4702306\pytest-806\test_output_file_is_created_ne0\mol_forward_tunnex_2.out.
+2026-10-12 14:32:08 [INFO] Results were saved to: C:\Users\4702306\AppData\Local\Temp\pytest-of-4702306\pytest-806\test_output_matches_independen0\mol_forward_tunnex_2.out.
+2026-10-12 14:32:09 [INFO] Results were saved to: C:\Users\4702306\AppData\Local\Temp\pytest-of-4702306\pytest-806\test_output_matches_independen1\mol_forward_tunnex_2.out.
+2026-10-12 14:32:09 [INFO] Results were saved to: C:\Users\4702306\AppData\Local\Temp\pytest-of-4702306\pytest-806\test_output_matches_independen2\mol_forward_tunnex_2.out.
+2026-10-12 14:32:09 [INFO] Results were saved to: C:\Users\4702306\AppData\Local\Temp\pytest-of-4702306\pytest-806\test_report_has_no_nan0\mol_forward_tunnex_2.out.
+2026-10-12 14:32:10 [INFO] Results were saved to: C:\Users\4702306\AppData\Local\Temp\pytest-of-4702306\pytest-806\test_string_and_path_inputs_gi0\as_path\mol_forward_tunnex_2.out.
+2026-10-12 14:32:10 [INFO] Results were saved to: C:\Users\4702306\AppData\Local\Temp\pytest-of-4702306\pytest-806\test_string_and_path_inputs_gi0\as_str\mol_forward_tunnex_2.out.
+2026-10-12 14:32:10 [INFO] Results were saved to: C:\Users\4702306\AppData\Local\Temp\pytest-of-4702306\pytest-806\test_existing_output_is_overwr0\mol_forward_tunnex_2.out.
+2026-10-12 14:32:10 [INFO] Results were saved to: C:\Users\4702306\AppData\Local\Temp\pytest-of-4702306\pytest-806\test_multi_dot_input_name0\mol.v2.forward_tunnex_2.out.
+2026-10-12 14:32:16 [INFO] Results were saved to: C:\Users\4702306\AppData\Local\Temp\pytest-of-4702306\pytest-806\test_repeated_runs_give_identi4\mol_forward_tunnex_2.out.
+2026-10-12 14:32:16 [INFO] Results were saved to: C:\Users\4702306\AppData\Local\Temp\pytest-of-4702306\pytest-806\test_repeated_runs_give_identi4\mol_forward_tunnex_2.out.
+2026-10-12 14:32:16 [INFO] Results were saved to: C:\Users\4702306\AppData\Local\Temp\pytest-of-4702306\pytest-806\test_input_file_is_not_modifie0\mol_forward_tunnex_2.out.
+2026-10-12 14:32:16 [INFO] Results were saved to: C:\Users\4702306\AppData\Local\Temp\pytest-of-4702306\pytest-806\test_params_and_irc_are_not_mo0\mol_forward_tunnex_2.out.
+2026-10-12 14:32:17 [INFO] Results were saved to: C:\Users\4702306\AppData\Local\Temp\pytest-of-4702306\pytest-806\test_only_the_output_file_is_c0\mol_forward_tunnex_2.out.
+2026-10-12 14:33:24 [WARNING] Expected sum of correlation factors of 1.000. Got 1.142. Please check your data.
+2026-10-12 14:33:24 [INFO] For reactant the attempt frequency is 149.50 cm-1. Correlation weights sum = 1.142. Please check the frequency.
+2026-10-12 14:33:24 [WARNING] Expected sum of correlation factors of 1.000. Got 1.142. Please check your data.
+2026-10-12 14:33:24 [INFO] For product the attempt frequency is 149.50 cm-1. Correlation weights sum = 1.142. Please check the frequency.
+2026-10-12 14:33:24 [WARNING] Expected sum of correlation factors of 1.000. Got 1.142. Please check your data.
+2026-10-12 14:33:24 [INFO] For reactant the attempt frequency is 149.50 cm-1. Correlation weights sum = 1.142. Please check the frequency.
+2026-10-12 14:33:24 [WARNING] Expected sum of correlation factors of 1.000. Got 1.142. Please check your data.
+2026-10-12 14:33:24 [INFO] For reactant the attempt frequency is 149.50 cm-1. Correlation weights sum = 1.142. Please check the frequency.
+2026-10-12 14:33:24 [WARNING] Expected sum of correlation factors of 1.000. Got 1.142. Please check your data.
+2026-10-12 14:33:24 [INFO] For product the attempt frequency is 149.50 cm-1. Correlation weights sum = 1.142. Please check the frequency.
+2026-10-12 14:33:24 [WARNING] Expected sum of correlation factors of 1.000. Got 1.217. Please check your data.
+2026-10-12 14:33:24 [INFO] For reactant the attempt frequency is 187.74 cm-1. Correlation weights sum = 1.217. Please check the frequency.
+2026-10-12 14:33:24 [WARNING] Expected sum of correlation factors of 1.000. Got 1.207. Please check your data.
+2026-10-12 14:33:24 [INFO] For reactant the attempt frequency is 180.99 cm-1. Correlation weights sum = 1.207. Please check the frequency.
+2026-10-12 14:33:24 [INFO] For reactant the attempt frequency is 200.00 cm-1. Correlation weights sum = 1.000. Please check the frequency.
+2026-10-12 14:33:24 [WARNING] Expected sum of correlation factors of 1.000. Got 1.386. Please check your data.
+2026-10-12 14:33:24 [INFO] For reactant the attempt frequency is 208.40 cm-1. Correlation weights sum = 1.386. Please check the frequency.
+2026-10-12 14:33:24 [WARNING] Expected sum of correlation factors of 1.000. Got 1.142. Please check your data.
+2026-10-12 14:33:24 [INFO] For product the attempt frequency is 149.50 cm-1. Correlation weights sum = 1.142. Please check the frequency.
+2026-10-12 14:33:29 [WARNING] The deviation between the reagent[IRC] and submitted reagent's energy is 5.0%. More detailed IRC computations in the region of the reagent may be necessary.
+2026-10-12 14:33:29 [WARNING] The deviation between the reagent[IRC] and submitted reagent's energy is 20.0%. More detailed IRC computations in the region of the reagent may be necessary.
+2026-10-12 14:33:30 [INFO] Results were saved to: C:\Users\4702306\AppData\Local\Temp\pytest-of-4702306\pytest-806\test_string_path_accepted1\mol_forward_tunnex_2.out.
+2026-10-12 14:33:30 [INFO] Results were saved to: C:\Users\4702306\AppData\Local\Temp\pytest-of-4702306\pytest-806\test_path_object_accepted0\mol_forward_tunnex_2.out.
+2026-10-12 14:33:30 [INFO] Results were saved to: C:\Users\4702306\AppData\Local\Temp\pytest-of-4702306\pytest-806\test_output_filename_has_tunne0\mol_forward_tunnex_2.out.
+2026-10-12 14:33:30 [INFO] Results were saved to: C:\Users\4702306\AppData\Local\Temp\pytest-of-4702306\pytest-806\test_output_file_in_same_direc0\mol_forward_tunnex_2.out.
+2026-10-12 14:33:30 [INFO] Results were saved to: C:\Users\4702306\AppData\Local\Temp\pytest-of-4702306\pytest-806\test_read_input_called_with_re0\mol_forward_tunnex_2.out.
+2026-10-12 14:33:30 [INFO] Results were saved to: C:\Users\4702306\AppData\Local\Temp\pytest-of-4702306\pytest-806\test_detect_outliers_called_tw0\mol_forward_tunnex_2.out.
+2026-10-12 14:33:30 [INFO] Results were saved to: C:\Users\4702306\AppData\Local\Temp\pytest-of-4702306\pytest-806\test_detect_outliers_called_fo0\mol_forward_tunnex_2.out.
+2026-10-12 14:33:30 [INFO] Results were saved to: C:\Users\4702306\AppData\Local\Temp\pytest-of-4702306\pytest-806\test_detect_outliers_called_wi0\mol_forward_tunnex_2.out.
+2026-10-12 14:33:30 [INFO] Results were saved to: C:\Users\4702306\AppData\Local\Temp\pytest-of-4702306\pytest-806\test_potential_called_with_cor0\mol_forward_tunnex_2.out.
+2026-10-12 14:33:30 [INFO] Results were saved to: C:\Users\4702306\AppData\Local\Temp\pytest-of-4702306\pytest-806\test_pipeline_called_with_para0\mol_forward_tunnex_2.out.
+2026-10-12 14:33:30 [INFO] Results were saved to: C:\Users\4702306\AppData\Local\Temp\pytest-of-4702306\pytest-806\test_build_report_called0\mol_forward_tunnex_2.out.
+2026-10-12 14:33:30 [INFO] Results were saved to: C:\Users\4702306\AppData\Local\Temp\pytest-of-4702306\pytest-806\test_write_output_called_with_0\mol_forward_tunnex_2.out.
+2026-10-12 14:33:30 [INFO] Results were saved to: C:\Users\4702306\AppData\Local\Temp\pytest-of-4702306\pytest-806\test_build_report_receives_off0\mol_forward_tunnex_2.out.
+2026-10-12 14:33:30 [INFO] Results were saved to: C:\Users\4702306\AppData\Local\Temp\pytest-of-4702306\pytest-806\test_returns_none2\mol_forward_tunnex_2.out.
+2026-10-12 14:33:30 [INFO] Results were saved to: C:\Users\4702306\AppData\Local\Temp\pytest-of-4702306\pytest-806\test_pipeline_called_with_para1\mol_forward_tunnex_2.out.
+2026-10-12 14:33:30 [INFO] Results were saved to: C:\Users\4702306\AppData\Local\Temp\pytest-of-4702306\pytest-806\test_build_report_receives_exa0\mol_forward_tunnex_2.out.
+2026-10-12 14:33:30 [INFO] Results were saved to: C:\Users\4702306\AppData\Local\Temp\pytest-of-4702306\pytest-806\test_build_report_receives_tem0\mol_forward_tunnex_2.out.
+2026-10-12 14:33:30 [INFO] Results were saved to: C:\Users\4702306\AppData\Local\Temp\pytest-of-4702306\pytest-806\test_output_filename_only_stri0\mol.v2.forward_tunnex_2.out.
