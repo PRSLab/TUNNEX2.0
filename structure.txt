@@ -291,9 +291,13 @@ tunnex_2_v0p8p3/
 ├── calculations_log.log
 ├── CODE_OF_CONDUCT.md
 ├── command_settings.txt
+├── command_settings_g.txt
+├── command_settings_o.txt
 ├── LICENSE
 ├── MANIFEST.in
 ├── pyproject.toml
 ├── README.md
+├── requirements.txt
+├── run-orca-customised_tunnex_2.sh
 ├── setup.cfg
 └── structure.txt
