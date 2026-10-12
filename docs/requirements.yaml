@@ -1,0 +1,26 @@
+name: docs_TUNNEX2.0
+
+  - python=3.13
+  
+channels:
+
+  - conda-forge
+
+  - defaults
+dependencies:
+    # Base depends
+  - python
+  - pip
+  - sphinx
+
+  - pydata-sphinx-theme
+  - sphinx-design
+  - sphinx-copybutton
+
+
+
+
+    # Pip-only installs
+  - pip:
+    - -e ../
+
