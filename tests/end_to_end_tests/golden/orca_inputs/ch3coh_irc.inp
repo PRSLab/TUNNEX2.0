@@ -1,0 +1,25 @@
+! B3LYP 6-311++G** IRC
+
+%irc
+    MaxIter 100
+    PrintLevel 1
+    Direction both
+    InitHess calc_anfreq
+    hessMode 0
+    Init_Displ length
+    Scale_Init_Displ 0.10
+    Scale_Displ_SD   0.10
+    Adapt_Scale_Displ false
+end
+
+* xyz 0 1
+C -0.000232 0.524137 -0.000044
+O -1.223303 0.064432 0.000092
+C 1.106842 -0.467434 -0.000020
+H -1.054737 1.223941 -0.000026
+H 0.717907 -1.493482 -0.000029
+H 1.740225 -0.292943 0.876739
+H 1.740316 -0.292939 -0.876711
+*
+
+
