@@ -1,0 +1,303 @@
+tunnex_2_v0p8p3/
+│
+│
+│
+│
+├── data/
+│   ├── README.md
+│   ├── WKB_100927b_cypro13CH_AE-CCSD_T_pVTZ_B3PW91_cc-pVTZ_tight_input.txt
+│   ├── WKB_100927b_cypro13CH_AE-CCSD_T_pVTZ_B3PW91_cc-pVTZ_tight_input_tunnex_2_tunn_prob_aver_1.out
+│   ├── WKB_100927b_cypro13CH_AE-CCSD_T_pVTZ_B3PW91_cc-pVTZ_tight_input_tunnex_2_tunn_prob_aver_2.out
+│   ├── WKB_100927b_cypro13CH_AE-CCSD_T_pVTZ_B3PW91_cc-pVTZ_tight_input_tunnex_2_tunn_prob_aver_3_old_version.out
+│   ├── WKB_261002b_CH3COH_B3LYP_6-311++G_gaussian_input.txt
+│   ├── WKB_261002b_CH3COH_B3LYP_6-311++G_gaussian_input_tunnex_2_tunn_prob_aver_1.out
+│   ├── WKB_261002b_CH3COH_B3LYP_6-311++G_gaussian_input_tunnex_2_tunn_prob_aver_2.out
+│   └── WKB_261002b_CH3COH_B3LYP_6-311++G_gaussian_input_tunnex_2_tunn_prob_aver_3_old_version.out
+├── devtools/
+│   ├── conda-envs/
+│   │   ├── environment.yml
+│   │   └── test_env.yml
+│   ├── scripts/
+│   │   └── create_conda_env.py
+│   └── README.md
+├── docs/
+│   ├── _static/
+│   │   └── README.md
+│   ├── _templates/
+│   │   └── README.md
+│   ├── autosummary/
+│   │   ├── tunnex_2.cli.rst
+│   │   ├── tunnex_2.constants_and_dataclasses.constants_and_settings.rst
+│   │   ├── tunnex_2.constants_and_dataclasses.dataclasses.rst
+│   │   ├── tunnex_2.constants_and_dataclasses.rst
+│   │   ├── tunnex_2.irc_computations.ancillary_functions.attempt_freq_calc.rst
+│   │   ├── tunnex_2.irc_computations.ancillary_functions.eckart_potential_functions.rst
+│   │   ├── tunnex_2.irc_computations.ancillary_functions.interface.rst
+│   │   ├── tunnex_2.irc_computations.ancillary_functions.irc_helpers.rst
+│   │   ├── tunnex_2.irc_computations.ancillary_functions.rst
+│   │   ├── tunnex_2.irc_computations.ancillary_functions.tunnex_input.rst
+│   │   ├── tunnex_2.irc_computations.gaussian.gaussian_create_input_file.rst
+│   │   ├── tunnex_2.irc_computations.gaussian.gaussian_file_parsing.rst
+│   │   ├── tunnex_2.irc_computations.gaussian.gaussian_file_writing.rst
+│   │   ├── tunnex_2.irc_computations.gaussian.gaussian_patterns.rst
+│   │   ├── tunnex_2.irc_computations.gaussian.gaussian_proj_freq.rst
+│   │   ├── tunnex_2.irc_computations.gaussian.rst
+│   │   ├── tunnex_2.irc_computations.module_irc_computations.rst
+│   │   ├── tunnex_2.irc_computations.orca.orca_create_input_file.rst
+│   │   ├── tunnex_2.irc_computations.orca.orca_file_parsing.rst
+│   │   ├── tunnex_2.irc_computations.orca.orca_file_writing.rst
+│   │   ├── tunnex_2.irc_computations.orca.orca_patterns.rst
+│   │   ├── tunnex_2.irc_computations.orca.orca_proj_freq.rst
+│   │   ├── tunnex_2.irc_computations.orca.rst
+│   │   ├── tunnex_2.irc_computations.pipeline.irc_computations_pipeline.rst
+│   │   ├── tunnex_2.irc_computations.pipeline.rst
+│   │   ├── tunnex_2.irc_computations.rst
+│   │   ├── tunnex_2.main.rst
+│   │   ├── tunnex_2.qmt_computations.core.kinetics.rst
+│   │   ├── tunnex_2.qmt_computations.core.potential.rst
+│   │   ├── tunnex_2.qmt_computations.core.rst
+│   │   ├── tunnex_2.qmt_computations.core.turning_points.rst
+│   │   ├── tunnex_2.qmt_computations.core.wkb.rst
+│   │   ├── tunnex_2.qmt_computations.data_reader_writer.reader.rst
+│   │   ├── tunnex_2.qmt_computations.data_reader_writer.rst
+│   │   ├── tunnex_2.qmt_computations.data_reader_writer.writer.rst
+│   │   ├── tunnex_2.qmt_computations.module_qmt_computations.rst
+│   │   ├── tunnex_2.qmt_computations.pipeline.qmt_computations_pipeline.rst
+│   │   ├── tunnex_2.qmt_computations.pipeline.rst
+│   │   └── tunnex_2.qmt_computations.rst
+│   ├── api.rst
+│   ├── conf.py
+│   ├── developer_guide.rst
+│   ├── getting_started.rst
+│   ├── index.rst
+│   ├── make.bat
+│   ├── Makefile
+│   ├── README.md
+│   ├── requirements.yaml
+│   └── user_guide.rst
+├── tests/
+│   ├── end_to_end_tests/
+│   │   ├── data/
+│   │   │   ├── gaussian/
+│   │   │   │   ├── ch3coh.gjf
+│   │   │   │   ├── ch3coh_irc.out
+│   │   │   │   ├── ch3coh_irc_forw_not_used.out
+│   │   │   │   ├── ch3coh_irc_rev_not_used.out
+│   │   │   │   ├── ch3coh_prod.out
+│   │   │   │   ├── ch3coh_react.out
+│   │   │   │   └── ch3coh_ts.out
+│   │   │   ├── orca/
+│   │   │   │   ├── ch3coh.inp
+│   │   │   │   ├── ch3coh_irc.out
+│   │   │   │   ├── ch3coh_irc_IRC_B.xyz
+│   │   │   │   ├── ch3coh_irc_IRC_F.xyz
+│   │   │   │   ├── ch3coh_irc_IRC_Full_trj.xyz
+│   │   │   │   ├── ch3coh_prod.hess
+│   │   │   │   ├── ch3coh_prod.out
+│   │   │   │   ├── ch3coh_react.hess
+│   │   │   │   ├── ch3coh_react.out
+│   │   │   │   ├── ch3coh_ts.hess
+│   │   │   │   └── ch3coh_ts.out
+│   │   │   └── tunnex_2/
+│   │   │       ├── ch3coh_backward_gaussian.txt
+│   │   │       └── ch3coh_backward_orca.txt
+│   │   ├── golden/
+│   │   │   ├── gaussian/
+│   │   │   │   ├── ch3coh_backward_tunnex_2.out
+│   │   │   │   └── ch3coh_forward_tunnex_2.out
+│   │   │   ├── gaussian_eckart/
+│   │   │   │   ├── ch3coh_backward_tunnex_2.out
+│   │   │   │   └── ch3coh_forward_tunnex_2.out
+│   │   │   ├── gaussian_inputs/
+│   │   │   │   ├── ch3coh_irc.gjf
+│   │   │   │   ├── ch3coh_prod.gjf
+│   │   │   │   ├── ch3coh_prod_corr.txt
+│   │   │   │   ├── ch3coh_react.gjf
+│   │   │   │   ├── ch3coh_react_corr.txt
+│   │   │   │   ├── ch3coh_ts.gjf
+│   │   │   │   └── gaussian_atom_masses.out
+│   │   │   ├── orca/
+│   │   │   │   ├── ch3coh_backward_tunnex_2.out
+│   │   │   │   └── ch3coh_forward_tunnex_2.out
+│   │   │   ├── orca_eckart/
+│   │   │   │   ├── ch3coh_backward_tunnex_2.out
+│   │   │   │   └── ch3coh_forward_tunnex_2.out
+│   │   │   ├── orca_inputs/
+│   │   │   │   ├── ch3coh_irc.inp
+│   │   │   │   ├── ch3coh_prod.inp
+│   │   │   │   ├── ch3coh_prod_corr.txt
+│   │   │   │   ├── ch3coh_react.inp
+│   │   │   │   ├── ch3coh_react_corr.txt
+│   │   │   │   ├── ch3coh_ts.inp
+│   │   │   │   └── orca_atom_masses.out
+│   │   │   └── tunnex_2/
+│   │   │       ├── ch3coh_backward_gaussian_fin_tunnex_2.out
+│   │   │       ├── ch3coh_backward_gaussian_inf_tunnex_2.out
+│   │   │       ├── ch3coh_backward_orca_fin_tunnex_2.out
+│   │   │       └── ch3coh_backward_orca_inf_tunnex_2.out
+│   │   ├── __init__.py
+│   │   ├── conftest.py
+│   │   ├── test_comp_mode_e2e.py
+│   │   └── test_qmt_mode_e2e.py
+│   ├── integration_tests/
+│   │   ├── gaussian/
+│   │   │   ├── ch3coh.gjf
+│   │   │   ├── ch3coh_irc.out
+│   │   │   ├── ch3coh_irc_failed.out
+│   │   │   ├── ch3coh_irc_no_status.out
+│   │   │   ├── ch3coh_irc_outlier.out
+│   │   │   ├── ch3coh_prod.out
+│   │   │   ├── ch3coh_prod_failed.out
+│   │   │   ├── ch3coh_react.out
+│   │   │   ├── ch3coh_react_failed.out
+│   │   │   ├── ch3coh_ts.out
+│   │   │   ├── ch3coh_ts_failed.out
+│   │   │   ├── ch3coh_ts_no_status.out
+│   │   │   └── gaussian_atom_masses.out
+│   │   ├── orca/
+│   │   │   ├── ch3coh.inp
+│   │   │   ├── ch3coh_irc.out
+│   │   │   ├── ch3coh_irc_failed.out
+│   │   │   ├── ch3coh_irc_IRC_B.xyz
+│   │   │   ├── ch3coh_irc_IRC_F.xyz
+│   │   │   ├── ch3coh_irc_IRC_Full_trj.xyz
+│   │   │   ├── ch3coh_irc_IRC_Full_trj_failed.xyz
+│   │   │   ├── ch3coh_irc_IRC_Full_trj_outlier.xyz
+│   │   │   ├── ch3coh_prod.hess
+│   │   │   ├── ch3coh_prod.out
+│   │   │   ├── ch3coh_prod_failed.out
+│   │   │   ├── ch3coh_react.hess
+│   │   │   ├── ch3coh_react.out
+│   │   │   ├── ch3coh_react_failed.out
+│   │   │   ├── ch3coh_ts.hess
+│   │   │   ├── ch3coh_ts.out
+│   │   │   ├── ch3coh_ts_failed.out
+│   │   │   └── orca_atom_masses.out
+│   │   ├── __init__.py
+│   │   ├── test_cli_int.py
+│   │   ├── test_irc_computations_pipeline_int.py
+│   │   ├── test_main_int.py
+│   │   ├── test_module_irc_computations_int.py
+│   │   ├── test_module_qmt_computations_int.py
+│   │   └── test_qmt_computations_pipeline_int.py
+│   ├── regression_tests/
+│   │   ├── __init__.py
+│   │   └── test_tunnex_2_reg.py
+│   ├── unit_tests/
+│   │   ├── test_constants_and_dataclasses/
+│   │   │   ├── __init__.py
+│   │   │   ├── test_constants_and_settings.py
+│   │   │   └── test_dataclasses.py
+│   │   ├── test_irc_computations/
+│   │   │   ├── test_ancillary_functions/
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── test_attempt_freq_calc.py
+│   │   │   │   ├── test_eckart_potential_functions.py
+│   │   │   │   ├── test_interface.py
+│   │   │   │   ├── test_irc_helpers.py
+│   │   │   │   └── test_tunnex_input.py
+│   │   │   ├── test_gaussian/
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── test_gaussian_create_input_file.py
+│   │   │   │   ├── test_gaussian_file_parsing.py
+│   │   │   │   ├── test_gaussian_file_writing.py
+│   │   │   │   ├── test_gaussian_patterns.py
+│   │   │   │   └── test_gaussian_proj_freq.py
+│   │   │   ├── test_orca/
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── test_orca_create_input_file.py
+│   │   │   │   ├── test_orca_file_parsing.py
+│   │   │   │   ├── test_orca_file_writing.py
+│   │   │   │   ├── test_orca_patterns.py
+│   │   │   │   └── test_orca_proj_freq.py
+│   │   │   ├── test_pipeline/
+│   │   │   │   ├── __init__.py
+│   │   │   │   └── test_irc_computations_pipeline.py
+│   │   │   ├── __init__.py
+│   │   │   └── test_module_irc_computations.py
+│   │   ├── test_qmt_computations/
+│   │   │   ├── test_core/
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── test_kinetics.py
+│   │   │   │   ├── test_potential.py
+│   │   │   │   ├── test_turning_points.py
+│   │   │   │   └── test_wkb.py
+│   │   │   ├── test_data_reader_writer/
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── test_reader.py
+│   │   │   │   └── test_writer.py
+│   │   │   ├── test_pipeline/
+│   │   │   │   ├── __init__.py
+│   │   │   │   └── test_qmt_computations_pipeline.py
+│   │   │   ├── __init__.py
+│   │   │   └── test_module_qmt_computations.py
+│   │   ├── __init__.py
+│   │   ├── test_cli.py
+│   │   └── test_main.py
+│   └── __init__.py
+├── tunnex_2/
+│   ├── constants_and_dataclasses/
+│   │   ├── __init__.py
+│   │   ├── constants_and_settings.py
+│   │   └── dataclasses.py
+│   ├── irc_computations/
+│   │   ├── ancillary_functions/
+│   │   │   ├── __init__.py
+│   │   │   ├── attempt_freq_calc.py
+│   │   │   ├── eckart_potential_functions.py
+│   │   │   ├── interface.py
+│   │   │   ├── irc_helpers.py
+│   │   │   └── tunnex_input.py
+│   │   ├── gaussian/
+│   │   │   ├── __init__.py
+│   │   │   ├── gaussian_create_input_file.py
+│   │   │   ├── gaussian_file_parsing.py
+│   │   │   ├── gaussian_file_writing.py
+│   │   │   ├── gaussian_patterns.py
+│   │   │   └── gaussian_proj_freq.py
+│   │   ├── orca/
+│   │   │   ├── __init__.py
+│   │   │   ├── orca_create_input_file.py
+│   │   │   ├── orca_file_parsing.py
+│   │   │   ├── orca_file_writing.py
+│   │   │   ├── orca_patterns.py
+│   │   │   └── orca_proj_freq.py
+│   │   ├── pipeline/
+│   │   │   ├── __init__.py
+│   │   │   └── irc_computations_pipeline.py
+│   │   ├── __init__.py
+│   │   └── module_irc_computations.py
+│   ├── qmt_computations/
+│   │   ├── core/
+│   │   │   ├── __init__.py
+│   │   │   ├── kinetics.py
+│   │   │   ├── potential.py
+│   │   │   ├── turning_points.py
+│   │   │   └── wkb.py
+│   │   ├── data_reader_writer/
+│   │   │   ├── __init__.py
+│   │   │   ├── reader.py
+│   │   │   └── writer.py
+│   │   ├── pipeline/
+│   │   │   ├── __init__.py
+│   │   │   └── qmt_computations_pipeline.py
+│   │   ├── __init__.py
+│   │   └── module_qmt_computations.py
+│   ├── __init__.py
+│   ├── __main__.py
+│   ├── _version.py
+│   ├── cli.py
+│   └── main.py
+├── calculations_log.log
+├── CODE_OF_CONDUCT.md
+├── command_settings.txt
+├── command_settings_g.txt
+├── command_settings_o.txt
+├── LICENSE
+├── MANIFEST.in
+├── pyproject.toml
+├── README.md
+├── requirements.txt
+├── run-orca-customised_tunnex_2.sh
+├── setup.cfg
+└── structure.txt

@@ -15,9 +15,10 @@
 # Incase the project was not installed
 import os
 import sys
+from importlib.metadata import version as _pkg_version
 sys.path.insert(0, os.path.abspath('..'))
 
-import tunnex
+import tunnex_2  # type: ignore
 
 
 # -- Project information -----------------------------------------------------
@@ -27,10 +28,10 @@ copyright = ("2026, Pavel Zasimov. Project structure based on the "
              "Computational Molecular Science Python Cookiecutter version 1.11")
 author = 'Pavel Zasimov'
 
-# The short X.Y version
-version = ''
-# The full version, including alpha/beta/rc tags
-release = ''
+# Version is read from the installed package metadata (pyproject.toml)
+release = _pkg_version("tunnex_2")
+version = ".".join(release.split(".")[:2])
+
 
 
 # -- General configuration ---------------------------------------------------
@@ -77,7 +78,7 @@ master_doc = 'index'
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = 'en'
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
