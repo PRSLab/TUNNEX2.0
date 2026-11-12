@@ -24,7 +24,6 @@ import pytest  # type: ignore
 
 import numpy as np
 import os
-import re
 import hashlib
 import shutil
 import subprocess
@@ -32,30 +31,21 @@ import sys
 from pathlib import Path
 from types import SimpleNamespace
 
+from tests.helpers import PROJECT_ROOT, CH3COH_DATA_DIR, OUTPUT_SUFFIX, TIMEOUT, GOLDEN_RTOL, numbers
+
 from tunnex_2.qmt_computations.data_reader_writer.reader import read_input  # type: ignore
 
 
 # --- Helpers and shared data ---
 pytestmark = pytest.mark.e2e
 
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
-# The folder where pyproject.toml is located
-DATA_DIR = PROJECT_ROOT / "tests/end_to_end_tests/data/"
-# The folder with the example input files and the reference outputs
+DATA_DIR = CH3COH_DATA_DIR
+# The recorded Gaussian and ORCA calculations (shared with the integration tests)
+INTEGRATION_ONLY_FILES = shutil.ignore_patterns("*_failed*", "*_outlier*", "*_no_status*", "*_atom_masses*")
+# The broken variants used only by the integration tests; they are not copied into the e2e work folders
 GOLDEN_DIR = PROJECT_ROOT / "tests/end_to_end_tests/golden/"
 # The folder with the reference outputs
 
-OUTPUT_SUFFIX = "_tunnex_2.out"
-# The default output suffix for the files
-TIMEOUT = 120
-# The timeout time for subprocesses
-GOLDEN_RTOL = 1e-6
-# Relative tolerance of the comparison with the reference outputs
-
-SKIPPED_LINES = re.compile(r"version|date|file|path|directory", re.IGNORECASE)
-# The lines which are not compared
-NUMBER = re.compile(r"[-+]?(?:\d+\.\d*|\.\d+|\d+)(?:[eEdD][-+]?\d+)?")
-# The number pattern used by a program
 
 PROGRAMS = {
     "gaussian": dict(
@@ -78,27 +68,10 @@ PROGRAMS = {
         # The program reference data
 
 
-@pytest.fixture(scope="module")
-def tunnex_cmd() -> list[str]:
-    """ The installed console command """
-    exe = shutil.which("tunnex_2")
-    if exe is not None:
-        return [exe]
-    return [sys.executable, "-c", "from tunnex_2.cli import cli; cli()"]
-
 def _snapshot(directory: Path) -> dict[str, str]:
     """ File name -> SHA-256 of the content for all the files of the directory """
     return {path.name: hashlib.sha256(path.read_bytes()).hexdigest()
             for path in directory.iterdir() if path.is_file()}
-
-def _numbers(text: str) -> np.ndarray:
-    """ All the numbers of the text (the lines matching SKIPPED_LINES are dropped) """
-    values = []
-    for line in text.splitlines():
-        if SKIPPED_LINES.search(line):
-            continue
-        values.extend(float(x.replace("D", "e").replace("d", "e")) for x in NUMBER.findall(line))
-    return np.array(values)
 
 def _outputs(work: Path) -> list[Path]:
     """ Should create the output files """
@@ -122,7 +95,7 @@ def _check_golden(case_id: str, output: Path, update: bool):
         return
     if not golden.is_file():
         pytest.skip(f"no reference file {golden}; run pytest with --update-golden, check the result and commit it")
-    got, expected = _numbers(output.read_text(encoding="utf-8")), _numbers(golden.read_text(encoding="utf-8"))
+    got, expected = numbers(output.read_text(encoding="utf-8")), numbers(golden.read_text(encoding="utf-8"))
     assert got.shape == expected.shape, \
     f"{output.name}: expected {expected.shape[0]} numbers, got {got.shape[0]}; test #1"
     deviation = np.abs(got - expected) / np.maximum(np.abs(expected), 1e-300)
@@ -140,7 +113,7 @@ def case(request, tmp_path, tunnex_cmd):
     if missing:
         pytest.skip(f"the recorded files {missing} are not found in {source}")
     work = tmp_path / "work"
-    shutil.copytree(source, work)
+    shutil.copytree(source, work, ignore=INTEGRATION_ONLY_FILES)
 
     # --- Fake Gaussian or ORCA executables which fail loudly and leave a trace ---
     bin_dir = tmp_path / "trap_bin"
@@ -191,7 +164,7 @@ def _run(case, argv, cwd=None) -> subprocess.CompletedProcess:
 def _copy_recorded(case, name: str) -> Path:
     """ Make one more clean copy of the recorded files """
     destination = case.tmp / name
-    shutil.copytree(case.source, destination)
+    shutil.copytree(case.source, destination, ignore=INTEGRATION_ONLY_FILES)
     return destination
 
 def _assert_clean_run(done, case):

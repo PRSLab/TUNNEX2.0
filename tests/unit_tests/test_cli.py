@@ -91,19 +91,6 @@ class TestDefaultMode:
         cfg = _run(["mol.gjf"])
         assert cfg.tunnex_input == None, f"Expected {None}, got {cfg.tunnex_input}"
 
-    def test_zero_files_raises(self):
-        """ Raises an error when no input files are provided. Expecting a SystemExit 2 """
-        result = _run_expect_error([])
-        assert result.value.code == 2, f"Expected {2}, got {result.value.code}"
-
-    def test_two_files_raises(self):
-        """
-        Raises an error when more than one input file
-        is provided in default mode. Expecting a SystemExit 2
-        """
-        result = _run_expect_error(["mol.gjf", "extra.gjf"])
-        assert result.value.code == 2, f"Expected {2}, got {result.value.code}"
-
 
 # ============================================================================
 # --- cli - [-o] [--orca] flag
@@ -114,16 +101,6 @@ class TestOrcaFlag:
         """ Tests that the ORCA flag sets the program mode to ORCA """
         cfg = _run(["-o", "--no_zpve", "mol.inp"])
         assert cfg.prog_mode == "orca", f"Expected {"orca"}, got {cfg.prog_mode}"
-
-    def test_orca_with_calcfc_raises(self):
-        """ Tests that ORCA cannot be combined with the calcfc option. Expecting a SystemExit 2 """
-        result = _run_expect_error(["--orca", "--calcfc", "mol.inp"])
-        assert result.value.code == 2, f"Expected {2}, got {result.value.code}"
-
-    def test_orca_with_qmt_only_raises(self):
-        """ Tests that ORCA cannot be combined with QMT-only mode. Expecting a SystemExit 2 """
-        result = _run_expect_error(["--orca", "--qmt_only", "mol.inp"])
-        assert result.value.code == 2, f"Expected {2}, got {result.value.code}"
 
 
 # ============================================================================
@@ -136,22 +113,6 @@ class TestNoZpveFlag:
         cfg = _run(["-z", "mol.gjf"])
         assert cfg.proj_freq is False, f"Expected {False}, got {cfg.proj_freq}"
 
-    def test_no_zpve_with_eckart_raises(self):
-        """
-        Tests that no-ZPVE cannot be combined with the Eckart option.
-        Expecting a SystemExit 2
-        """
-        result = _run_expect_error(["--no_zpve", "--eckart", "mol.inp"])
-        assert result.value.code == 2, f"Expected {2}, got {result.value.code}"
-
-    def test_no_zpve_with_qmt_only_raises(self):
-        """
-        Tests that no-ZPVE cannot be combined with QMT-only mode.
-        Expecting a SystemExit 2
-        """
-        result = _run_expect_error(["--no_zpve", "--qmt_only", "mol.inp"])
-        assert result.value.code == 2, f"Expected {2}, got {result.value.code}"
-
 
 # ============================================================================
 # --- cli - [-f] [--calcfc] flag
@@ -162,22 +123,6 @@ class TestCalcfcFlag:
         """ Tests that the calcfc flag disables calculation of all frequencies """
         cfg = _run(["-f", "mol.gjf"])
         assert cfg.calc_all is False, f"Expected {False}, got {cfg.calc_all}"
-
-    def test_calcfc_with_eckart_raises(self):
-        """
-        Tests that calcfc cannot be combined with the Eckart option.
-        Expecting a SystemExit 2
-        """
-        result = _run_expect_error(["--calcfc", "--eckart", "mol.inp"])
-        assert result.value.code == 2, f"Expected {2}, got {result.value.code}"
-
-    def test_calcfc_with_qmt_only_raises(self):
-        """
-        Tests that calcfc cannot be combined with QMT-only mode.
-        Expecting a SystemExit 2
-        """
-        result = _run_expect_error(["--calcfc", "--qmt_only", "mol.inp"])
-        assert result.value.code == 2, f"Expected {2}, got {result.value.code}"
 
 
 # ============================================================================
@@ -190,22 +135,6 @@ class TestHybridFlag:
         cfg = _run(["-y", "mol.gjf"])
         assert cfg.hybrid_mode is True, f"Expected {True}, got {cfg.hybrid_mode}"
 
-    def test_hybrid_with_eckt_raises(self):
-        """
-        Tests that hybrid mode cannot be combined with the Eckart option.
-        Expecting a SystemExit 2
-        """
-        result = _run_expect_error(["--hybrid", "--eckart", "ts.gjf", "react.gjf", "prod.gjf"])
-        assert result.value.code == 2, f"Expected {2}, got {result.value.code}"
-
-    def test_hybrid_with_qmt_only_raises(self):
-        """
-        Tests that hybrid mode cannot be combined with QMT-only mode.
-        Expecting a SystemExit 2
-        """
-        result = _run_expect_error(["--hybrid", "--qmt_only", "mol.gjf"])
-        assert result.value.code == 2, f"Expected {2}, got {result.value.code}"
-
 
 # ============================================================================
 # --- cli - [-i] [--iso] flag
@@ -217,14 +146,6 @@ class TestIsoFlag:
         cfg = _run(["--i", "mol.gjf"])
         assert cfg.hess_parsing_flag is True, f"Expected {True}, got {cfg.hess_parsing_flag}"
 
-    def test_iso_with_qmt_only_raises(self):
-            """
-            Tests that the iso flag cannot be combined with QMT-only mode.
-            Expecting a SystemExit 2
-            """
-            result = _run_expect_error(["--iso", "--qmt_only", "mol.gjf"])
-            assert result.value.code == 2, f"Expected {2}, got {result.value.code}"
-
 
 # ============================================================================
 # --- cli - [-p] [--no_qmt] flag
@@ -235,14 +156,6 @@ class TestNoQmtFlag:
         """ Tests that the no-QMT flag disables the QMT module """
         cfg = _run(["-p", "mol.gjf"])
         assert cfg.qmt_module is False, f"Expected {False}, got {cfg.qmt_module}"
-
-    def test_no_qmt_with_qmt_only_raises(self):
-        """
-        Tests that the no-QMT flag cannot be combined with QMT-only mode.
-        Expecting a SystemExit 2
-        """
-        result = _run_expect_error(["--no_qmt", "--qmt_only", "mol.gjf"])
-        assert result.value.code == 2, f"Expected {2}, got {result.value.code}"
 
 
 # ============================================================================
@@ -261,22 +174,6 @@ class TestQmtOnlyMode:
         cfg = _run(["--qmt_only", "tunnex.txt"])
         assert str(cfg.tunnex_input) == "tunnex.txt", f"Expected {"tunnex.txt"}, "
         f"got {str(cfg.tunnex_input)}"
-
-    def test_qmt_only_requires_exactly_one_file(self):
-        """
-        Tests that QMT-only mode requires exactly one input file.
-        Expecting a SystemExit 2
-        """
-        result = _run_expect_error(["--qmt_only", "a.txt", "b.txt"])
-        assert result.value.code == 2, f"Expected {2}, got {result.value.code}"
-
-    def test_qmt_only_with_no_files_raises(self):
-        """
-        Tests that QMT-only mode raises an error when
-        no input file is provided. Expecting a SystemExit 2
-        """
-        result = _run_expect_error(["--qmt_only"])
-        assert result.value.code == 2, f"Expected {2}, got {result.value.code}"
 
 
 # ============================================================================
@@ -297,22 +194,6 @@ class TestEckartMode:
         result = [str(cfg.ts_input_file), str(cfg.react_input_file), str(cfg.prod_input_file)]
         for i, val in enumerate(expected):
             assert result[i] == val, f"Expected {val}, got {result[i]}; test #{i+1}"
-
-    def test_eckt_requires_three_files(self):
-        """
-        Tests that Eckart mode requires exactly three input files.
-        Expecting a SystemExit 2
-        """
-        result = _run_expect_error(["--eckart", "ts.gjf", "react.gjf"])
-        assert result.value.code == 2, f"Expected {2}, got {result.value.code}"
-    
-    def test_eckart_with_qmt_only_raises(self):
-        """
-        Tests that the Eckart option cannot be combined with QMT-only mode.
-        Expecting a SystemExit 2
-        """
-        result = _run_expect_error(["--eckart", "--qmt_only", "ts.gjf", "react.gjf", "prod.gjf"])
-        assert result.value.code == 2, f"Expected {2}, got {result.value.code}"
 
 
 # =========================================================================================
@@ -354,22 +235,6 @@ class TestCompMode:
         assert str(cfg.prod_computed_file)  == "prod.out", f"Expected {"prod.out"}, "
         f"got {str(cfg.prod_computed_file)}; test #2"
 
-    def test_comp_wrong_file_count_raises(self):
-        """
-        Tests that comp mode raises an error for
-        an invalid number of input files. Expecting a SystemExit 2
-        """
-        result = _run_expect_error(["--comp", "ts.gjf", "ts.out", "irc.out", "react.out"])
-        assert result.value.code == 2, f"Expected {2}, got {result.value.code}"
-
-    def test_comp_one_file_raises(self):
-        """
-        Tests that comp mode raises an error
-        when only one input file is provided. Expecting a SystemExit 2
-        """
-        result = _run_expect_error(["--comp", "ts.gjf"])
-        assert result.value.code == 2, f"Expected {2}, got {result.value.code}"
-
 
 # =========================================================================================
 # --- cli - Eckart computed files mode (--eckart and --comp, no --qmt_only; 4 files) ---
@@ -394,22 +259,44 @@ class TestEckartCompMode:
         assert str(cfg.prod_computed_file) == "prod.out", f"Expected {"prod.out"}, "
         f"got {str(cfg.prod_computed_file)}; test #6"
 
-    def test_eckt_comp_wrong_file_count_raises(self):
-        """
-        Tests that Eckart comp mode raises an error
-        when fewer than four input files are provided. Expecting a SystemExit 2
-        """
-        result = _run_expect_error(["--eckart", "--comp", "ts.gjf", "ts.out", "react.out"])
-        assert result.value.code == 2, f"Expected {2}, got {result.value.code}"
 
-    def test_eckt_comp_five_files_raises(self):
-        """
-        Tests that Eckart comp mode raises an error
-        when more than four input files are provided. Expecting a SystemExit 2
-        """
-        result = _run_expect_error(["--eckart", "--comp", "ts.gjf", "ts.out",
-        "react.out", "prod.out", "extra.out"])
-        assert result.value.code == 2, f"Expected {2}, got {result.value.code}"
+# =========================================================================================
+# --- cli - the error messages of the rejected command lines ---
+# =========================================================================================
+ERROR_MESSAGES = [
+    # (id, argv, message): every rejected command line ends with SystemExit 2, the message and the --help hint
+    ("zero_files_raises", [], "Default mode requires exactly 1 input file, got 0"),
+    ("two_files_raises", ["mol.gjf", "extra.gjf"], "Default mode requires exactly 1 input file, got 2"),
+    ("orca_with_calcfc_raises", ["--orca", "--calcfc", "mol.inp"], "--calcfc cannot be used with --orca (Gaussian only)"),
+    ("orca_with_qmt_only_raises", ["--orca", "--qmt_only", "mol.inp"], "--qmt_only cannot be combined with IRC calculation options"),
+    ("no_zpve_with_eckart_raises", ["--no_zpve", "--eckart", "mol.inp"], "--no_zpve cannot be used with --eckart"),
+    ("no_zpve_with_qmt_only_raises", ["--no_zpve", "--qmt_only", "mol.inp"], "--qmt_only cannot be combined with IRC calculation options"),
+    ("calcfc_with_eckart_raises", ["--calcfc", "--eckart", "mol.inp"], "--calcfc cannot be used with --eckart"),
+    ("calcfc_with_qmt_only_raises", ["--calcfc", "--qmt_only", "mol.inp"], "--qmt_only cannot be combined with IRC calculation options"),
+    ("hybrid_with_eckt_raises", ["--hybrid", "--eckart", "ts.gjf", "react.gjf", "prod.gjf"], "--hybrid cannot be used with --eckart"),
+    ("hybrid_with_qmt_only_raises", ["--hybrid", "--qmt_only", "mol.gjf"], "--qmt_only cannot be combined with IRC calculation options"),
+    ("iso_with_qmt_only_raises", ["--iso", "--qmt_only", "mol.gjf"], "--qmt_only cannot be combined with IRC calculation options"),
+    ("no_qmt_with_qmt_only_raises", ["--no_qmt", "--qmt_only", "mol.gjf"], "--qmt_only cannot be combined with --no_qmt"),
+    ("qmt_only_requires_exactly_one_file", ["--qmt_only", "a.txt", "b.txt"], "--qmt_only requires exactly 1 input file, got 2"),
+    ("qmt_only_with_no_files_raises", ["--qmt_only"], "--qmt_only requires exactly 1 input file, got 0"),
+    ("eckt_requires_three_files", ["--eckart", "ts.gjf", "react.gjf"], "--eckart requires exactly 3 input files, got 2"),
+    ("eckart_with_qmt_only_raises", ["--eckart", "--qmt_only", "ts.gjf", "react.gjf", "prod.gjf"], "--qmt_only cannot be combined with IRC calculation options"),
+    ("comp_wrong_file_count_raises", ["--comp", "ts.gjf", "ts.out", "irc.out", "react.out"], "--comp requires 2, 3 or 5 input files, got 4"),
+    ("comp_one_file_raises", ["--comp", "ts.gjf"], "--comp requires 2, 3 or 5 input files, got 1"),
+    ("eckt_comp_wrong_file_count_raises", ["--eckart", "--comp", "ts.gjf", "ts.out", "react.out"], "--eckart with --comp requires exactly 4 input files, got 3"),
+    ("eckt_comp_five_files_raises", ["--eckart", "--comp", "ts.gjf", "ts.out", "react.out", "prod.out", "extra.out"], "--eckart with --comp requires exactly 4 input files, got 5")]
+
+
+class TestErrorMessages:
+
+    @pytest.mark.parametrize("argv, message", [c[1:] for c in ERROR_MESSAGES], ids=[c[0] for c in ERROR_MESSAGES])
+    def test_rejected_with_message_and_hint(self, capsys, argv, message):
+        """ The parser rejects the command line with SystemExit 2, the specific message and the --help hint """
+        result = _run_expect_error(argv)
+        err = capsys.readouterr().err
+        assert result.value.code == 2, f"Expected {2}, got {result.value.code}; test #1"
+        assert message in err, f"Expected {message!r} in {err!r}; test #2"
+        assert "Use --help for more information." in err, f"Expected the --help hint in {err!r}; test #3"
 
 
 # =========================================================================================
