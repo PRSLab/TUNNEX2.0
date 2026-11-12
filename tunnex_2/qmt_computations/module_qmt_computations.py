@@ -2,7 +2,7 @@
 from pathlib import Path
 
 from tunnex_2.irc_computations.ancillary_functions.attempt_freq_calc import detect_outliers_local  # type: ignore
-from tunnex_2.irc_computations.ancillary_functions.interface import setup_logger  # type: ignore
+import logging
 
 from tunnex_2.qmt_computations.core.potential import Potential  # type: ignore
 from tunnex_2.qmt_computations.data_reader_writer.reader import read_input  # type: ignore
@@ -10,8 +10,8 @@ from tunnex_2.qmt_computations.data_reader_writer.writer import write_output, bu
 from tunnex_2.qmt_computations.pipeline.qmt_computations_pipeline import qmt_computations_pipeline  # type: ignore
 
 
-# --- Defining the logging function ---
-logger = setup_logger()
+# --- The module logger (configured once by setup_logger() in main) ---
+logger = logging.getLogger(__name__)
 
 
 # --- Defining the main function to compute the QMT half-lives ---

@@ -8,15 +8,13 @@ from tunnex_2.irc_computations.module_irc_computations import irc_computations_m
 from tunnex_2.qmt_computations.module_qmt_computations import qmt_computations_main # type: ignore
 
 
-# --- Defining the logging function ---
-logger = setup_logger()
-
-
 # --- Defining the main function to compute IRC and run TUNNEX 2.0 ---
 def main(configs: FindIRCConfig) -> None:
 
-    if configs.tunnex_input is None: 
-        log_run_start(setup_logger(), configs.ts_input_file)
+    logger = setup_logger() # the only place where the logging is configured
+
+    if configs.tunnex_input is None:
+        log_run_start(logger, configs.ts_input_file)
         tunnex_forward, tunnex_backward = irc_computations_main(configs)
 
         if configs.qmt_module:
@@ -24,7 +22,7 @@ def main(configs: FindIRCConfig) -> None:
             qmt_computations_main(tunnex_backward)
 
     else:
-        log_run_start(setup_logger(), configs.tunnex_input)
+        log_run_start(logger, configs.tunnex_input)
         qmt_computations_main(configs.tunnex_input)
 
 
@@ -34,14 +32,3 @@ def main(configs: FindIRCConfig) -> None:
 # 3. Go to a project folder (where pyproject.toml is located) and in terminal type: pip install -e . # Installing TUNNEX 2.0
 # 4. In terminal type: 'tunnex_2 --help'                                                             # Checking the installed files
 # 5. Use TUNNEX 2.0 as 'tunnex_2 your_filename.txt'.                                                 # Done. You're breathtaking!
-
-
-# An alternative way to run the code for debugging etc.
-#if __name__ == "__main__":
-
-    #folder = Path("floder_name")
-    #file = folder / "filename.inp"
-    #program = 'orca'
-    #configs = FindIRCConfig(ts_input_file=file, prog_mode=program)
-    
-    #main(configs)

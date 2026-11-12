@@ -1,4 +1,5 @@
 # --- Modules ---
+import logging
 import math # To be sure that in some cases we are working only with numbers, not arrays
 import numpy as np
 from pathlib import Path
@@ -28,8 +29,7 @@ from tunnex_2.irc_computations.ancillary_functions.interface import( # type: ign
     gauss_out_filename,
     orca_error_check,
     orca_out_filename,
-    file_check,
-    setup_logger)
+    file_check)
 from tunnex_2.irc_computations.ancillary_functions.tunnex_input import ( # type: ignore
     write_input_head,
     writing_el_energy,
@@ -57,8 +57,8 @@ from tunnex_2.irc_computations.orca.orca_file_writing import ( # type: ignore
 from tunnex_2.irc_computations.orca import orca_patterns # type: ignore
 
 
-# --- Defining the logging function ---
-logger = setup_logger()
+# --- The module logger (configured once by setup_logger() in main) ---
+logger = logging.getLogger(__name__)
 
 
 # --- Defining the function for the optimization of the transition state geometry ---

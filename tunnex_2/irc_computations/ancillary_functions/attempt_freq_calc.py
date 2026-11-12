@@ -6,15 +6,17 @@ from pathlib import Path
 from tunnex_2.constants_and_dataclasses.constants_and_settings import CM_M1_TO_HARTREE # type: ignore
 from tunnex_2.constants_and_dataclasses.dataclasses import IRCData, EnergyPointsData # type: ignore
 
-from tunnex_2.irc_computations.ancillary_functions.interface import setup_logger, file_check # type: ignore
+import logging
+
+from tunnex_2.irc_computations.ancillary_functions.interface import file_check # type: ignore
 
 from tunnex_2.irc_computations.gaussian.gaussian_file_parsing import gauss_mode_coordinate_reader # type: ignore
 
 from tunnex_2.irc_computations.orca.orca_file_parsing import orca_mode_coordinate_reader # type: ignore
 
 
-# --- Defining the logging function ---
-logger = setup_logger()
+# --- The module logger (configured once by setup_logger() in main) ---
+logger = logging.getLogger(__name__)
 
 
 # --- Scaling the coordinates of the vibrational mode vectors ---
