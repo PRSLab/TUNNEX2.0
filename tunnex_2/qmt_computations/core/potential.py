@@ -2,11 +2,11 @@
 import numpy as np
 from scipy.interpolate import PchipInterpolator
 
-from tunnex_2.irc_computations.ancillary_functions.interface import setup_logger # type: ignore
+import logging
 
 
-# --- Defining the logging function ---
-logger = setup_logger()
+# --- The module logger (configured once by setup_logger() in main) ---
+logger = logging.getLogger(__name__)
 
 
 # --- Defining the class Potential ---

@@ -7,12 +7,9 @@ from contextlib import ExitStack, contextmanager
 from unittest.mock import patch
 pytestmark = pytest.mark.integration  # type: ignore
 
-import tunnex_2  # type: ignore
 
 import numpy as np
 import os
-import subprocess
-import sys
 from dataclasses import asdict
 from pathlib import Path
 from types import SimpleNamespace
@@ -32,14 +29,10 @@ from tunnex_2.cli import cli  # type: ignore
 
 
 # --- Helpers and shared data ---
-PROJECT_ROOT = Path(tunnex_2.__file__).resolve().parent.parent
-# The folder where pyproject.toml is located
 HELP_HINT = "Use --help for more information."
 # The tunnex_2 help hint
 OUTPUT_SUFFIX = "_tunnex_2.out"
 # The default output suffix for the files
-TIMEOUT = 120
-# The timeout time for subprocesses
 
 E0, ZPVE0 = -153.15, 0.02
 # The reference electronic energy and ZPVE (Hartree) of the synthetic IRC
@@ -141,13 +134,6 @@ def _value(config, name):
     """ Return the config field in a comparable form: bool and None as they are, paths as strings """
     value = getattr(config, name)
     return value if isinstance(value, (bool, type(None))) else str(value)
-
-def _run_process(argv, cwd) -> subprocess.CompletedProcess:
-    """ Run cli() in a separate process with the given command line arguments """
-    env = dict(os.environ)
-    env["PYTHONPATH"] = os.pathsep.join([str(PROJECT_ROOT), env.get("PYTHONPATH", "")])
-    return subprocess.run([sys.executable, "-c", "from tunnex_2.cli import cli; cli()", *argv],
-                          cwd=cwd, env=env, capture_output=True, text=True, timeout=TIMEOUT)
 
 
 # --- Runs the function with the real stages ---
@@ -356,24 +342,3 @@ class TestRejectedCommandLines:
         assert HELP_HINT in capsys.readouterr().err, \
         f"expected {HELP_HINT} in {capsys.readouterr().err}; test #2"
         h.assert_nothing_started()
-
-
-# ===========================================================================
-# --- cli - separate process ---
-# ===========================================================================
-class TestProcessLevel:
-
-    def test_help_exits_with_zero(self, tmp_path):
-        """ cli() started in a separate process prints the usage with the zero exit code """
-        completed = _run_process(["--help"], tmp_path)
-        assert completed.returncode == 0, \
-        f"expected exit code {0}, got {completed.returncode}; stderr: {completed.stderr[-500:]}; test #1"
-        assert "usage: tunnex_2" in completed.stdout, \
-        f"expected {'usage: tunnex_2'} in {completed.stdout}; test #2"
-
-    def test_invalid_combination_exits_with_two(self, tmp_path):
-        """ An invalid combination of the options ends the separate process with the exit code 2 and a hint """
-        completed = _run_process(["--orca", "--calcfc", "mol.inp"], tmp_path)
-        assert completed.returncode == 2, \
-        f"expected exit code {2}, got {completed.returncode}; stderr: {completed.stderr[-500:]}; test #1"
-        assert HELP_HINT in completed.stderr, f"expected {HELP_HINT} in {completed.stderr}; test #2"

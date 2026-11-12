@@ -34,9 +34,12 @@ from tunnex_2.irc_computations.pipeline.irc_computations_pipeline import (  # ty
     eckart_react_prod_optimization,
     eckart_potential_results)
 
+from tests.helpers import CH3COH_DATA_DIR
+
 
 # --- Helpers and shared data ---
-DATA = Path(__file__).parent
+DATA = CH3COH_DATA_DIR
+# The recorded Gaussian and ORCA calculations (shared with the end-to-end tests)
 
 TS_OPT_CASES = {"gaussian": dict(guess="ch3coh.gjf", ok="ch3coh_ts.out",
                 failed="ch3coh_ts_failed.out", no_status="ch3coh_ts_no_status.out"),

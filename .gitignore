@@ -1,0 +1,38 @@
+# --- Python bytecode and caches ---
+__pycache__/
+*.py[cod]
+
+# --- Testing and coverage ---
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+
+# --- Packaging and build artifacts ---
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# --- Virtual environments ---
+.venv/
+venv/
+env/
+
+# --- Documentation build (docs/autosummary/ is tracked on purpose) ---
+docs/_build/
+
+# --- Run logs (tunnex_2 writes calculations_log.log to the working directory) ---
+*.log
+
+# --- Editors and operating systems ---
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# NOTE: do not ignore *.out or *.txt here - the golden reference outputs and the
+# example inputs in tests/ and data/ use those suffixes, and new golden files
+# written with --update-golden must stay visible to git

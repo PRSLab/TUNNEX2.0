@@ -11,14 +11,14 @@ from tunnex_2.constants_and_dataclasses.constants_and_settings import ( # type: 
     CM_M1_TO_HARTREE)
 from tunnex_2.constants_and_dataclasses.dataclasses import ArrheniusResult  # type: ignore
 
-from tunnex_2.irc_computations.ancillary_functions.interface import setup_logger  # type: ignore
+import logging
 
 from tunnex_2.qmt_computations.core.turning_points import find_turning_points  # type: ignore
 from tunnex_2.qmt_computations.core.wkb import compute_wkb, int_convergence_warning  # type: ignore
 
 
-# --- Defining the logging function ---
-logger = setup_logger()
+# --- The module logger (configured once by setup_logger() in main) ---
+logger = logging.getLogger(__name__)
 
 
 # --- Defining the function to compute the transmission probability ---

@@ -76,28 +76,45 @@ tunnex_2_v0p8p3/
 │   ├── requirements.yaml
 │   └── user_guide.rst
 ├── tests/
+│   ├── data/
+│   │   └── ch3coh/
+│   │       ├── gaussian/
+│   │       │   ├── ch3coh.gjf
+│   │       │   ├── ch3coh_irc.out
+│   │       │   ├── ch3coh_irc_failed.out
+│   │       │   ├── ch3coh_irc_forw_not_used.out
+│   │       │   ├── ch3coh_irc_no_status.out
+│   │       │   ├── ch3coh_irc_outlier.out
+│   │       │   ├── ch3coh_irc_rev_not_used.out
+│   │       │   ├── ch3coh_prod.out
+│   │       │   ├── ch3coh_prod_failed.out
+│   │       │   ├── ch3coh_react.out
+│   │       │   ├── ch3coh_react_failed.out
+│   │       │   ├── ch3coh_ts.out
+│   │       │   ├── ch3coh_ts_failed.out
+│   │       │   ├── ch3coh_ts_no_status.out
+│   │       │   └── gaussian_atom_masses.out
+│   │       └── orca/
+│   │           ├── ch3coh.inp
+│   │           ├── ch3coh_irc.out
+│   │           ├── ch3coh_irc_failed.out
+│   │           ├── ch3coh_irc_IRC_B.xyz
+│   │           ├── ch3coh_irc_IRC_F.xyz
+│   │           ├── ch3coh_irc_IRC_Full_trj.xyz
+│   │           ├── ch3coh_irc_IRC_Full_trj_failed.xyz
+│   │           ├── ch3coh_irc_IRC_Full_trj_outlier.xyz
+│   │           ├── ch3coh_prod.hess
+│   │           ├── ch3coh_prod.out
+│   │           ├── ch3coh_prod_failed.out
+│   │           ├── ch3coh_react.hess
+│   │           ├── ch3coh_react.out
+│   │           ├── ch3coh_react_failed.out
+│   │           ├── ch3coh_ts.hess
+│   │           ├── ch3coh_ts.out
+│   │           ├── ch3coh_ts_failed.out
+│   │           └── orca_atom_masses.out
 │   ├── end_to_end_tests/
 │   │   ├── data/
-│   │   │   ├── gaussian/
-│   │   │   │   ├── ch3coh.gjf
-│   │   │   │   ├── ch3coh_irc.out
-│   │   │   │   ├── ch3coh_irc_forw_not_used.out
-│   │   │   │   ├── ch3coh_irc_rev_not_used.out
-│   │   │   │   ├── ch3coh_prod.out
-│   │   │   │   ├── ch3coh_react.out
-│   │   │   │   └── ch3coh_ts.out
-│   │   │   ├── orca/
-│   │   │   │   ├── ch3coh.inp
-│   │   │   │   ├── ch3coh_irc.out
-│   │   │   │   ├── ch3coh_irc_IRC_B.xyz
-│   │   │   │   ├── ch3coh_irc_IRC_F.xyz
-│   │   │   │   ├── ch3coh_irc_IRC_Full_trj.xyz
-│   │   │   │   ├── ch3coh_prod.hess
-│   │   │   │   ├── ch3coh_prod.out
-│   │   │   │   ├── ch3coh_react.hess
-│   │   │   │   ├── ch3coh_react.out
-│   │   │   │   ├── ch3coh_ts.hess
-│   │   │   │   └── ch3coh_ts.out
 │   │   │   └── tunnex_2/
 │   │   │       ├── ch3coh_backward_gaussian.txt
 │   │   │       └── ch3coh_backward_orca.txt
@@ -140,39 +157,6 @@ tunnex_2_v0p8p3/
 │   │   ├── test_comp_mode_e2e.py
 │   │   └── test_qmt_mode_e2e.py
 │   ├── integration_tests/
-│   │   ├── gaussian/
-│   │   │   ├── ch3coh.gjf
-│   │   │   ├── ch3coh_irc.out
-│   │   │   ├── ch3coh_irc_failed.out
-│   │   │   ├── ch3coh_irc_no_status.out
-│   │   │   ├── ch3coh_irc_outlier.out
-│   │   │   ├── ch3coh_prod.out
-│   │   │   ├── ch3coh_prod_failed.out
-│   │   │   ├── ch3coh_react.out
-│   │   │   ├── ch3coh_react_failed.out
-│   │   │   ├── ch3coh_ts.out
-│   │   │   ├── ch3coh_ts_failed.out
-│   │   │   ├── ch3coh_ts_no_status.out
-│   │   │   └── gaussian_atom_masses.out
-│   │   ├── orca/
-│   │   │   ├── ch3coh.inp
-│   │   │   ├── ch3coh_irc.out
-│   │   │   ├── ch3coh_irc_failed.out
-│   │   │   ├── ch3coh_irc_IRC_B.xyz
-│   │   │   ├── ch3coh_irc_IRC_F.xyz
-│   │   │   ├── ch3coh_irc_IRC_Full_trj.xyz
-│   │   │   ├── ch3coh_irc_IRC_Full_trj_failed.xyz
-│   │   │   ├── ch3coh_irc_IRC_Full_trj_outlier.xyz
-│   │   │   ├── ch3coh_prod.hess
-│   │   │   ├── ch3coh_prod.out
-│   │   │   ├── ch3coh_prod_failed.out
-│   │   │   ├── ch3coh_react.hess
-│   │   │   ├── ch3coh_react.out
-│   │   │   ├── ch3coh_react_failed.out
-│   │   │   ├── ch3coh_ts.hess
-│   │   │   ├── ch3coh_ts.out
-│   │   │   ├── ch3coh_ts_failed.out
-│   │   │   └── orca_atom_masses.out
 │   │   ├── __init__.py
 │   │   ├── test_cli_int.py
 │   │   ├── test_irc_computations_pipeline_int.py
@@ -180,9 +164,6 @@ tunnex_2_v0p8p3/
 │   │   ├── test_module_irc_computations_int.py
 │   │   ├── test_module_qmt_computations_int.py
 │   │   └── test_qmt_computations_pipeline_int.py
-│   ├── regression_tests/
-│   │   ├── __init__.py
-│   │   └── test_tunnex_2_reg.py
 │   ├── unit_tests/
 │   │   ├── test_constants_and_dataclasses/
 │   │   │   ├── __init__.py
@@ -234,7 +215,9 @@ tunnex_2_v0p8p3/
 │   │   ├── __init__.py
 │   │   ├── test_cli.py
 │   │   └── test_main.py
-│   └── __init__.py
+│   ├── __init__.py
+│   ├── conftest.py
+│   └── helpers.py
 ├── tunnex_2/
 │   ├── constants_and_dataclasses/
 │   │   ├── __init__.py
@@ -288,7 +271,7 @@ tunnex_2_v0p8p3/
 │   ├── _version.py
 │   ├── cli.py
 │   └── main.py
-├── calculations_log.log
+├── .gitignore
 ├── CODE_OF_CONDUCT.md
 ├── command_settings.txt
 ├── command_settings_g.txt

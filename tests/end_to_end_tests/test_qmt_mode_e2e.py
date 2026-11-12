@@ -28,15 +28,14 @@ import numpy as np
 import re
 import shutil
 import subprocess
-import sys
 from pathlib import Path
+
+from tests.helpers import PROJECT_ROOT, OUTPUT_SUFFIX, TIMEOUT, GOLDEN_RTOL, numbers
 
 
 # --- Helpers and shared data ---
 pytestmark = pytest.mark.e2e
 
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
-# The folder where pyproject.toml is located
 DATA_DIR = PROJECT_ROOT / "tests/end_to_end_tests/data/tunnex_2/"
 # The folder with the example input files
 GOLDEN_DIR = PROJECT_ROOT / "tests/end_to_end_tests/golden/tunnex_2/"
@@ -47,17 +46,6 @@ INPUT_NAMES = ["ch3coh_backward_gaussian.txt",
 BASELINE_INPUT = DATA_DIR / INPUT_NAMES[0]
 # The valid input used as the starting point of the broken-input tests
 
-OUTPUT_SUFFIX = "_tunnex_2.out"
-# The default output suffix for the files
-TIMEOUT = 120
-# The timeout time for subprocesses
-GOLDEN_RTOL = 1e-6
-# Relative tolerance of the comparison with the reference outputs
-
-SKIPPED_LINES = re.compile(r"version|date|file|path|directory", re.IGNORECASE)
-# The lines which are not compared
-NUMBER = re.compile(r"[-+]?(?:\d+\.\d*|\.\d+|\d+)(?:[eEdD][-+]?\d+)?")
-# The number pattern used by a program
 
 
 # The broken inputs
@@ -77,14 +65,6 @@ BROKEN_INPUTS = [
     ("zpve_block_missing", lambda t: _drop_line(t, "IRC; ZPVE"), "empty or missing")]
 
 
-@pytest.fixture(scope="module")
-def tunnex_cmd() -> list[str]:
-    """ The installed console command """
-    exe = shutil.which("tunnex_2")
-    if exe is not None:
-        return [exe]
-    return [sys.executable, "-c", "from tunnex_2.cli import cli; cli()"]
-
 def _run(cmd, args, cwd) -> subprocess.CompletedProcess:
     """ Run the command in a separate process in the given working directory """
     return subprocess.run([*cmd, *args], cwd=cwd, capture_output=True, text=True, timeout=TIMEOUT)
@@ -92,15 +72,6 @@ def _run(cmd, args, cwd) -> subprocess.CompletedProcess:
 def _output_for(inp: Path) -> Path:
     """ Defines the output files for tunnex_2 """
     return inp.with_name(inp.stem + OUTPUT_SUFFIX)
-
-def _numbers(text: str) -> np.ndarray:
-    """ Search all the numbers of the text """
-    values = []
-    for line in text.splitlines():
-        if SKIPPED_LINES.search(line):
-            continue
-        values.extend(float(x.replace("D", "e").replace("d", "e")) for x in NUMBER.findall(line))
-    return np.array(values)
 
 def _created_files(directory: Path, inp: Path) -> set[str]:
     """ The names of the files created in the directory except the input file """
@@ -177,6 +148,10 @@ def _assert_rejected(done: subprocess.CompletedProcess, tmp_path: Path, message:
 # --- tunnex_2 - command line ---
 # ===========================================================================
 class TestCommandLine:
+    """
+    Smoke tests of the installed command. The parser rules and their messages are
+    covered by tests/unit_tests/test_cli.py (TestErrorMessages and the flag classes)
+    """
 
     def test_help_exits_with_zero(self, tmp_path, tunnex_cmd):
         """ --help prints the usage and exits with the zero code """
@@ -186,50 +161,10 @@ class TestCommandLine:
         assert "usage: tunnex_2" in done.stdout, \
         f"expected {'usage: tunnex_2'} in {done.stdout[:200]}; test #2"
 
-    def test_qmt_only_with_two_files_exits_with_two(self, tmp_path, tunnex_cmd):
-        """ --qmt_only with two files is rejected with the exit code 2 and a hint; nothing is created """
-        done = _run(tunnex_cmd, ["--qmt_only", "a.txt", "b.txt"], tmp_path)
-        assert done.returncode == 2, \
-        f"expected exit code {2}, got {done.returncode}; test #1"
-        assert "Use --help for more information." in done.stderr, \
-        f"expected the hint in {done.stderr}; test #2"
-        assert not list(tmp_path.glob("*_tunnex_2.out")), \
-        "expected no output files; test #3"
-
-    def test_qmt_only_with_irc_option_exits_with_two(self, tmp_path, tunnex_cmd):
-        """ --qmt_only cannot be combined with the IRC calculation options """
-        done = _run(tunnex_cmd, ["--qmt_only", "--orca", "a.txt"], tmp_path)
-        _assert_rejected(done, tmp_path, "--qmt_only cannot be combined with IRC calculation options")
-        # it should raise an error
-
-    def test_qmt_only_with_no_qmt_exits_with_two(self, tmp_path, tunnex_cmd):
-        """ --qmt_only and --no_qmt contradict each other """
-        done = _run(tunnex_cmd, ["--qmt_only", "--no_qmt", "a.txt"], tmp_path)
-        _assert_rejected(done, tmp_path, "--qmt_only cannot be combined with --no_qmt")
-        # it should raise an error
-
-    def test_qmt_only_without_files_exits_with_two(self, tmp_path, tunnex_cmd):
-        """ --qmt_only without an input file is rejected and the number of files is reported """
-        done = _run(tunnex_cmd, ["--qmt_only"], tmp_path)
-        _assert_rejected(done, tmp_path, "requires exactly 1 input file, got 0")
-        # it should raise an error
-
-    def test_eckart_with_hybrid_exits_with_two(self, tmp_path, tunnex_cmd):
-        """ --hybrid cannot be used with --eckart """
-        done = _run(tunnex_cmd, ["--eckart", "--hybrid", "ts.txt", "react.txt", "prod.txt"], tmp_path)
-        _assert_rejected(done, tmp_path, "--hybrid cannot be used with --eckart")
-        # it should raise an error
-
     def test_orca_with_calcfc_exits_with_two(self, tmp_path, tunnex_cmd):
         """ --calcfc works only for Gaussian, so it is rejected together with --orca """
         done = _run(tunnex_cmd, ["--orca", "--calcfc", "ts.txt"], tmp_path)
         _assert_rejected(done, tmp_path, "--calcfc cannot be used with --orca (Gaussian only)")
-        # it should raise an error
-
-    def test_comp_with_wrong_number_of_files_exits_with_two(self, tmp_path, tunnex_cmd):
-        """ --comp accepts only 2, 3 or 5 files; 4 files (without --eckart) are rejected """
-        done = _run(tunnex_cmd, ["--comp", "a.txt", "b.txt", "c.txt", "d.txt"], tmp_path)
-        _assert_rejected(done, tmp_path, "--comp requires 2, 3 or 5 input files, got 4")
         # it should raise an error
 
 
@@ -334,8 +269,8 @@ class TestReferenceOutputs:
             reference.write_text(got_text, encoding="utf-8")
             return  # None
         expected_text = reference.read_text(encoding="utf-8")
-        got = _numbers(got_text)
-        expected = _numbers(expected_text)
+        got = numbers(got_text)
+        expected = numbers(expected_text)
         assert got.shape == expected.shape, \
         f"expected {expected.shape[0]} numbers, got {got.shape[0]}; test #3"
         assert np.allclose(got, expected, rtol=GOLDEN_RTOL, atol=1e-12), \
