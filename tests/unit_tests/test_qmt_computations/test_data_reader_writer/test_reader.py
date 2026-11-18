@@ -59,93 +59,44 @@ def _read_input_with_mocked_dataclasses(path):
 # ===========================================================================
 # --- _parse_line - normal behaviour and input validation ---
 # ===========================================================================
+PARSE_LINE_VALID = [
+    # (id, line, expected)
+    ("single_key_value_pair", "freq=1500.0", {"freq": 1500.0}),
+    ("multiple_key_value_pairs", "freq=1500.0; T=298.15", {"freq": 1500.0, "T": 298.15}),
+    ("whitespace_around_keys_and_values", " freq = 1500.0 ; T = 298.15 ", {"freq": 1500.0, "T": 298.15}),
+    ("trailing_semicolon_is_tolerated", "freq=1500.0;", {"freq": 1500.0}),
+    ("double_semicolon_is_tolerated", "freq=1500.0;;T=298.15", {"freq": 1500.0, "T": 298.15})]
+
+PARSE_LINE_INVALID = [
+    # (id, line, line_number, match)
+    ("whitespace_only_segment", "freq=1500.0; ;T=298.15", 1, "Invalid key=value format"),
+    ("missing_equals_sign", "freq1500.0", 3, "Invalid key=value format"),
+    ("duplicate_keys", "freq=1500.0; freq=2000.0; T=50", 3, "duplicate key"),
+    ("non_numeric_value", "freq=abc", 2, "Invalid key=value format"),
+    ("not_a_number", "freq=NAN", 2, "Invalid key=value format"),
+    ("inf", "freq=inf", 1, "Invalid key=value format"),
+    ("minus_inf", "freq=-inf", 1, "Invalid key=value format"),
+    ("Infinity", "freq=Infinity", 1, "Invalid key=value format"),
+    ("multiple_equals_signs_in_one_pair", "freq=1500=0", 1, "Invalid key=value format"),
+    ("mode_like_string_in_a_numeric_field", "freq=finite_sum", 1, "Invalid key=value format"),
+    ("error_message_includes_line_number", "bad", 7, r"\[Line 7\]")]
+
+
 class TestParseLine:
 
-    def test_parses_single_key_value_pair(self):
-        """ Verify that a single key=value pair is parsed into a dict with a float value """
-        result = _parse_line("freq=1500.0", 1)
-        expected = {"freq": 1500.0}
-        assert result == {"freq": 1500.0}, f"expected {expected}, got {result}"
-
-    def test_parses_multiple_key_value_pairs(self):
-        """ Verify that multiple semicolon-separated key=value pairs are all parsed """
-        result = _parse_line("freq=1500.0; T=298.15", 1)
-        expected = {"freq": 1500.0, "T": 298.15}
+    @pytest.mark.parametrize("line, expected", [c[1:] for c in PARSE_LINE_VALID],
+                             ids=[c[0] for c in PARSE_LINE_VALID])
+    def test_parses_valid_line(self, line, expected):
+        """ Verify that valid key=value lines are parsed into a dict with float values """
+        result = _parse_line(line, 1)
         assert result == expected, f"expected {expected}, got {result}"
 
-    def test_strips_whitespace_around_keys_and_values(self):
-        """ Verify that whitespace around keys and values is stripped before parsing """
-        result = _parse_line(" freq = 1500.0 ; T = 298.15 ", 1)
-        expected = {"freq": 1500.0, "T": 298.15}
-        assert result == expected, f"expected {expected}, got {result}"
-
-    def test_trailing_semicolon_is_tolerated(self):
-        """ Verify that a trailing semicolon is tolerated, since the resulting empty item is skipped """
-        result = _parse_line("freq=1500.0;", 1)
-        assert result == {"freq": 1500.0}, f"expected {{'freq': 1500.0}}, got {result}"
-
-    def test_double_semicolon_is_tolerated(self):
-        """ Verify that a double semicolon (producing an empty item in between) is tolerated """
-        result = _parse_line("freq=1500.0;;T=298.15", 1)
-        expected = {"freq": 1500.0, "T": 298.15}
-        assert result == expected, f"expected {expected}, got {result}"
-
-    def test_whitespace_only_segment_still_raises(self):
-        """ Verify that a segment containing only whitespace raises an error. Expecting a ValueError """
-        with pytest.raises(ValueError, match="Invalid key=value format"):
-            _parse_line("freq=1500.0; ;T=298.15", 1)
-    
-    def test_raises_on_missing_equals_sign(self):
-        """ Verify that a line without an '=' sign raises an error. Expecting a ValueError """
-        with pytest.raises(ValueError, match = "Invalid key=value format"):
-            _parse_line("freq1500.0", 3)
-
-    def test_raises_on_duplicate_keys(self):
-        """ Verify that a duplicate key raises an error. Expecting a ValueError """
-        with pytest.raises(ValueError, match = "duplicate key"):
-            _parse_line("freq=1500.0; freq=2000.0; T=50", 3)
-
-    def test_raises_on_non_numeric_value(self):
-        """ Verify that a non-numeric value raises an error. Expecting a ValueError """
-        with pytest.raises(ValueError, match = "Invalid key=value format"):
-            _parse_line("freq=abc", 2)
-
-    def test_raises_on_non_a_number(self):
-        """ Verify that not-a-number value raises an error. Expecting a ValueError """
-        with pytest.raises(ValueError, match = "Invalid key=value format"):
-            _parse_line("freq=NAN", 2)
-    
-    def test_error_message_includes_line_number(self):
-        """
-        Verify that the raised error message includes
-        the given line number. Expecting a ValueError """
-        with pytest.raises(ValueError, match=r"\[Line 7\]"):
-            _parse_line("bad", 7)
-
-    @pytest.mark.parametrize("bad_value", ["inf", "-inf", "Infinity"])
-    def test_rejects_infinite_values(self, bad_value):
-        """
-        Verify that +inf, -inf, and spelled-out Infinity values
-        raise an error. Expecting a ValueError
-        """
-        with pytest.raises(ValueError, match="Invalid key=value format"):
-            _parse_line(f"freq={bad_value}", 1)
-
-    def test_raises_on_multiple_equals_signs_in_one_pair(self):
-        """
-        Verify that a pair with more than one '=' sign
-        raises an error. Expecting a ValueError
-        """
-        with pytest.raises(ValueError, match="Invalid key=value format"):
-            _parse_line("freq=1500=0", 1) # unpacking failure
-
-    def test_mode_like_string_in_a_numeric_field_fails_at_parse_stage(self):
-        """
-        Verify that a non-numeric, mode-like string value
-        raises an error. Expecting a ValueError
-        """
-        with pytest.raises(ValueError, match="Invalid key=value format"):
-            _parse_line("freq=finite_sum", 1)
+    @pytest.mark.parametrize("line, line_number, match", [c[1:] for c in PARSE_LINE_INVALID],
+                             ids=[c[0] for c in PARSE_LINE_INVALID])
+    def test_raises_on_invalid_line(self, line, line_number, match):
+        """ Verify that malformed, duplicate, non-numeric or non-finite values raise. Expecting a ValueError """
+        with pytest.raises(ValueError, match=match):
+            _parse_line(line, line_number)
 
 
 # ===========================================================================
@@ -153,35 +104,21 @@ class TestParseLine:
 # ===========================================================================
 class TestValidatePositive:
 
-    def test_accepts_positive_value(self):
-        """ Verify that a strictly positive value passes validation without error """
-        result = _validate_positive("freq", 1500.0)
+    @pytest.mark.parametrize("name, value, allow_zero", [
+        ("freq", 1500.0, False), ("max_level", 0, True), ("max_level", 3, True)],
+        ids=["positive", "zero_when_allow_zero", "positive_when_allow_zero"])
+    def test_accepts_value(self, name, value, allow_zero):
+        """ Verify that positive values, and zero when allow_zero is True, pass validation without error """
+        result = _validate_positive(name, value, allow_zero=allow_zero)
         assert result is None, f"expected {None}, got {result}"
 
-    def test_accepts_zero_when_allow_zero_is_true(self):
-        """ Verify that zero is accepted when allow_zero is True """
-        result = _validate_positive("max_level", 0, allow_zero=True)
-        assert result is None, f"expected {None}, got {result}"
-
-    def test_accepts_positive_value_when_allow_zero_is_true(self):
-        """ Verify that a positive value still passes validation when allow_zero is True """
-        result = _validate_positive("max_level", 3, allow_zero=True)
-        assert result is None, f"expected {None}, got {result}"
-
-    def test_raises_on_zero_by_default(self):
-        """ Verify that zero raises an when allow_zero is False. Expecting a ValueError """
+    @pytest.mark.parametrize("name, value, allow_zero", [
+        ("freq", 0, False), ("freq", -1.0, False), ("max_level", -1, True)],
+        ids=["zero_by_default", "negative_by_default", "negative_even_when_allow_zero"])
+    def test_raises_on_value(self, name, value, allow_zero):
+        """ Verify that zero (unless allowed) and negative values raise. Expecting a ValueError """
         with pytest.raises(ValueError):
-            _validate_positive("freq", 0)
-
-    def test_raises_on_negative_value_by_default(self):
-        """ Verify that a negative value raises an when allow_zero is False. Expecting a ValueError """
-        with pytest.raises(ValueError):
-            _validate_positive("freq", -1.0)
-
-    def test_raises_on_negative_value_even_when_allow_zero_is_true(self):
-        """ Verify that a negative value raises an even when allow_zero is True. Expecting a ValueError """
-        with pytest.raises(ValueError):
-            _validate_positive("max_level", -1, allow_zero=True)
+            _validate_positive(name, value, allow_zero=allow_zero)
 
     def test_error_message_includes_name_and_value(self):
         """
@@ -195,6 +132,25 @@ class TestValidatePositive:
 # ===========================================================================
 # --- _read_irc_matrix - normal behaviour and input validation ---
 # ===========================================================================
+IRC_MATRIX_INVALID = [
+    # (id, lines, start_tag, end_tag, match)
+    ("missing_block", ["some", "other", "lines"], "IRC; E", "END; E", "empty or missing"),
+    ("empty_block", ["IRC; E", "END; E"], "IRC; E", "END; E", "empty or missing"),
+    ("key_swap", ["END; E", "1.0; -10.0", "0.5; -9.5", "IRC; E"], "IRC; E", "END; E", "empty or missing"),
+    ("other_block", ["IRC; E", "1.0; -10.0", "0.5; -9.5", "END; E"], "IRC; ZPVE", "END; ZPVE", "empty or missing"),
+    ("malformed_row", ["IRC; E", "not_a_valid_row", "END; E"], "IRC; E", "END; E", "Invalid IRC row"),
+    ("non_increasing_x_values", ["IRC; E", "1.0; -10.0", "0.5; -9.5", "END; E"], "IRC; E", "END; E",
+     "must be strictly increasing"),
+    ("duplicate_x_values", ["IRC; E", "0.0; -10.0", "0.0; -9.5", "END; E"], "IRC; E", "END; E",
+     "must be strictly increasing"),
+    ("not_a_number_values", ["IRC; E", "0.0; -10.0", "NaN; -9.5", "END; E"], "IRC; E", "END; E", "Invalid IRC row:"),
+    ("infinite_x_value", ["IRC; E", "-inf; -10.0", "1.0; -9.5", "END; E"], "IRC; E", "END; E", "Invalid IRC row"),
+    ("infinite_y_value", ["IRC; E", "0.0; inf", "1.0; -9.5", "END; E"], "IRC; E", "END; E", "Invalid IRC row"),
+    ("single_point_block", ["IRC; E", "0.0; -10.0", "END; E"], "IRC; E", "END; E", "Expected at least 2 points"),
+    ("error_message_names_the_correct_block", ["IRC; ZPVE", "0.0; 0.01", "END; ZPVE"], "IRC; ZPVE", "END; ZPVE",
+     r"IRC; ZPVE")]
+
+
 class TestReadIrcMatrix:
 
     def test_extracts_x_and_y_values_between_tags(self):
@@ -230,103 +186,55 @@ class TestReadIrcMatrix:
         x_vals, _ = _read_irc_matrix(lines, "IRC; E", "END; E")
         assert len(x_vals) == 2, f"expected {2}, got {len(x_vals)}"
     
-    def test_raises_on_missing_block(self):
+    @pytest.mark.parametrize("lines, start_tag, end_tag, match", [c[1:] for c in IRC_MATRIX_INVALID],
+                             ids=[c[0] for c in IRC_MATRIX_INVALID])
+    def test_raises_on_invalid_block(self, lines, start_tag, end_tag, match):
         """
-        Verify that an error is raised when the start tag
-        is not found at all. Expecting a ValueError
+        Verify that missing, empty, swapped, malformed, non-increasing,
+        non-finite and too-short blocks raise. Expecting a ValueError
         """
-        with pytest.raises(ValueError, match="empty or missing"):
-            _read_irc_matrix(["some", "other", "lines"], "IRC; E", "END; E")
-
-    def test_raises_on_empty_block(self):
-        """
-        Verify that an error is raised when the block
-        between tags contains no data rows. Expecting a ValueError
-        """
-        lines = ["IRC; E", "END; E"]
-        with pytest.raises(ValueError, match="empty or missing"):
-            _read_irc_matrix(lines, "IRC; E", "END; E")
-
-    def test_raises_on_key_swap(self):
-        """
-        Verify that an error is raised when the start and end markers
-        are swapped in the text. Expecting a ValueError
-        """
-        lines = ["END; E", "1.0; -10.0", "0.5; -9.5", "IRC; E"]
-        with pytest.raises(ValueError, match="empty or missing"):
-            _read_irc_matrix(lines, "IRC; E", "END; E")
-
-    def test_raises_on_other_block(self):
-        """
-        Verify that an error is raised when the start and end markers
-        are applied for the other block in the text. Expecting a ValueError
-        """
-        lines = ["IRC; E", "1.0; -10.0", "0.5; -9.5", "END; E"]
-        with pytest.raises(ValueError, match="empty or missing"):
-            _read_irc_matrix(lines, "IRC; ZPVE", "END; ZPVE")
-            # markers here are different from ones in lines
-
-    def test_raises_on_malformed_row(self):
-        """
-        Verify that a row without a semicolon-separated pair
-        raises an error. Expecting a ValueError
-        """
-        lines = ["IRC; E", "not_a_valid_row", "END; E"]
-        with pytest.raises(ValueError, match="Invalid IRC row"):
-            _read_irc_matrix(lines, "IRC; E", "END; E")
-
-    def test_raises_on_non_increasing_x_values(self):
-        """
-        Verify that non-strictly-increasing IRC x values
-        raise an error. Expecting a ValueError
-        """
-        lines = ["IRC; E", "1.0; -10.0", "0.5; -9.5", "END; E"]
-        with pytest.raises(ValueError, match="must be strictly increasing"):
-            _read_irc_matrix(lines, "IRC; E", "END; E")
-
-    def test_raises_on_duplicate_x_values(self):
-        """
-        Verify that a repeated (non-strictly-increasing) IRC x value
-        raises an error. Expecting a ValueError
-        """
-        lines = ["IRC; E", "0.0; -10.0", "0.0; -9.5", "END; E"]
-        with pytest.raises(ValueError, match="must be strictly increasing"):
-            _read_irc_matrix(lines, "IRC; E", "END; E")
-
-    def test_raises_on_non_a_number_values(self):
-        """ Verify that not-a-number value raises an error. Expecting a ValueError """
-        lines = ["IRC; E", "0.0; -10.0", "NaN; -9.5", "END; E"]
-        with pytest.raises(ValueError, match="Invalid IRC row:"):
-            _read_irc_matrix(lines, "IRC; E", "END; E")
-
-    def test_rejects_infinite_x_value(self):
-        """ Verify that an infinite x-value in an IRC row an error. Expecting a ValueError """
-        lines = ["IRC; E", "-inf; -10.0", "1.0; -9.5", "END; E"]
-        with pytest.raises(ValueError, match="Invalid IRC row"):
-            _read_irc_matrix(lines, "IRC; E", "END; E")
-
-    def test_rejects_infinite_y_value(self):
-        """ Verify that an infinite y-value in an IRC row an error. Expecting a ValueError """
-        lines = ["IRC; E", "0.0; inf", "1.0; -9.5", "END; E"]
-        with pytest.raises(ValueError, match="Invalid IRC row"):
-            _read_irc_matrix(lines, "IRC; E", "END; E")
-
-    def test_raises_on_single_point_block(self):
-        """ Verify that a block with only one data point raises a ValueError """
-        lines = ["IRC; E", "0.0; -10.0", "END; E"]
-        with pytest.raises(ValueError, match="Expected at least 2 points"):
-            _read_irc_matrix(lines, "IRC; E", "END; E")
-
-    def test_error_message_names_the_correct_block(self):
-        """ Verify that the too-few-points error message references the given start_tag """
-        lines = ["IRC; ZPVE", "0.0; 0.01", "END; ZPVE"]
-        with pytest.raises(ValueError, match=r"IRC; ZPVE"):
-            _read_irc_matrix(lines, "IRC; ZPVE", "END; ZPVE")
+        with pytest.raises(ValueError, match=match):
+            _read_irc_matrix(lines, start_tag, end_tag)
 
 
 # ===========================================================================
 # --- read_input - normal behaviour and input validation ---
 # ===========================================================================
+_E_OK = ["IRC; E", "-1.0; -10.0", "0.0; -9.5", "1.0; -10.0", "END; E"]
+
+READ_INPUT_INVALID = [
+    # (id, keyword arguments of _make_input_text, match)
+    ("missing_key_in_line_one", dict(header1="freq=1500.0; bogus=1.0"), "Missing required keys"),
+    ("unexpected_key_in_line_two",
+     dict(header2="E0=-1.0; corr-ZPVE0=0.01; potential_scaling_factor=1.0; N=2; extra=9"), "Unrecognized keys"),
+    ("unexpected_key_in_line_three",
+     dict(header3="T_arrhenius_min=200.0; T_arrhenius_max=400.0; T_step=10.0; tunn_prob_aver=2; extra=1"), "Unrecognized keys"),
+    ("non_positive_freq", dict(header1="freq=0.0; T=298.15"), "must be > 0"),
+    ("non_positive_temperature", dict(header1="freq=1500.0; T=-1.0"), "must be > 0"),
+    ("non_positive_scaling_factor", dict(header2="E0=-1.0; corr-ZPVE0=0.01; potential_scaling_factor=0.0; N=2"), "must be > 0"),
+    ("negative_N", dict(header2="E0=-1.0; corr-ZPVE0=0.01; potential_scaling_factor=1.0; N=-1"), "must be >= 0"),
+    ("non_integer_N", dict(header2="E0=-1.0; corr-ZPVE0=0.01; potential_scaling_factor=1.0; N=0.5"), "must be an integer"),
+    ("negative_non_integer_N", dict(header2="E0=-1.0; corr-ZPVE0=0.01; potential_scaling_factor=1.0; N=-0.5"), "must be >= 0"),
+    ("non_positive_T_arrhenius_min",
+     dict(header3="T_arrhenius_min=0.0; T_arrhenius_max=400.0; T_step=10.0; tunn_prob_aver=3"), "must be > 0"),
+    ("non_positive_T_arrhenius_max",
+     dict(header3="T_arrhenius_min=200.0; T_arrhenius_max=0.0; T_step=10.0; tunn_prob_aver=2"), "must be > 0"),
+    ("non_positive_T_step",
+     dict(header3="T_arrhenius_min=200.0; T_arrhenius_max=400.0; T_step=0.0; tunn_prob_aver=1"), "must be > 0"),
+    ("T_arrhenius_min_greater_than_max",
+     dict(header3="T_arrhenius_min=500.0; T_arrhenius_max=400.0; T_step=10.0; tunn_prob_aver=1"), "cannot be >="),
+    ("unknown_averaging_code",
+     dict(header3="T_arrhenius_min=200.0; T_arrhenius_max=400.0; T_step=10.0; tunn_prob_aver=4"), "temperature averaging mode"),
+    ("non_integer_averaging_code",
+     dict(header3="T_arrhenius_min=200.0; T_arrhenius_max=400.0; T_step=10.0; tunn_prob_aver=1.5"), "temperature averaging mode"),
+    ("initial_irc_values_differ",
+     dict(e_block=_E_OK, zpve_block=["IRC; ZPVE", "-2.0; 0.01", "0.0; 0.02", "1.0; 0.01", "END; ZPVE"]),
+     "Initial IRC values"),
+    ("final_irc_values_differ",
+     dict(e_block=_E_OK, zpve_block=["IRC; ZPVE", "-1.0; 0.01", "0.0; 0.02", "2.0; 0.01", "END; ZPVE"]),
+     "Final IRC values")]
+
+
 class TestReadInputFile:
 
     def test_accepts_str_path_as_well_as_path_object(self, tmp_path):
@@ -445,166 +353,13 @@ class TestReadInputFile:
         with pytest.raises(ValueError, match="Input file must contain at least"):
             read_input(f)
 
-    def test_raises_on_missing_key_in_line_one(self, tmp_path):
+    @pytest.mark.parametrize("text_kwargs, match", [c[1:] for c in READ_INPUT_INVALID],
+                             ids=[c[0] for c in READ_INPUT_INVALID])
+    def test_raises_on_invalid_content(self, tmp_path, text_kwargs, match):
         """
-        Verify that a missing key in the first header line
-        raises an error. Expecting a ValueError
+        Verify that missing or unknown keys, out-of-range values, an unknown averaging code
+        and mismatched E/ZPVE endpoints raise. Expecting a ValueError
         """
-        text = _make_input_text(header1="freq=1500.0; bogus=1.0")
-        f = _write_input_file(tmp_path, text)
-        with pytest.raises(ValueError, match="Missing required keys"):
-            read_input(f)
-
-    def test_raises_on_unexpected_key_in_line_two(self, tmp_path):
-        """
-        Verify that an unexpected key in the second header line
-        raises an error. Expecting a ValueError
-        """
-        text = _make_input_text(header2="E0=-1.0; corr-ZPVE0=0.01; "
-                                "potential_scaling_factor=1.0; N=2; extra=9")
-        f = _write_input_file(tmp_path, text)
-        with pytest.raises(ValueError, match="Unrecognized keys"):
-            read_input(f)
-
-    def test_raises_on_unexpected_key_in_line_three(self, tmp_path):
-        """
-        Verify that an unexpected key in the third header line
-        raises an error. Expecting a ValueError
-        """
-        text = _make_input_text(header3="T_arrhenius_min=200.0; T_arrhenius_max=400.0; T_step=10.0; "
-                                "tunn_prob_aver=2; extra=1")
-        f = _write_input_file(tmp_path, text)
-        with pytest.raises(ValueError, match="Unrecognized keys"):
-            read_input(f)
-
-    def test_raises_on_non_positive_freq(self, tmp_path):
-        """ Verify that a non-positive freq value raises an error. Expecting a ValueError """
-        text = _make_input_text(header1="freq=0.0; T=298.15")
-        f = _write_input_file(tmp_path, text)
-        with pytest.raises(ValueError, match="must be > 0"):
-            read_input(f)
-
-    def test_raises_on_non_positive_temperature(self, tmp_path):
-        """ Verify that a non-positive temperature value raises an error. Expecting a ValueError """
-        text = _make_input_text(header1="freq=1500.0; T=-1.0")
-        f = _write_input_file(tmp_path, text)
-        with pytest.raises(ValueError, match="must be > 0"):
-            read_input(f)
-
-    def test_raises_on_non_positive_scaling_factor(self, tmp_path):
-        """
-        Verify that a non-positive potential_scaling_factor
-        raises an error. Expecting a ValueError
-        """
-        text = _make_input_text(header2="E0=-1.0; corr-ZPVE0=0.01; potential_scaling_factor=0.0; N=2")
-        f = _write_input_file(tmp_path, text)
-        with pytest.raises(ValueError, match="must be > 0"):
-            read_input(f)
-
-    def test_raises_on_negative_upper_level_to_compute(self, tmp_path):
-        """
-        Verify that a negative N (the_upper_level_to_compute)
-        raises an error. Expecting a ValueError
-        """
-        text = _make_input_text(header2="E0=-1.0; corr-ZPVE0=0.01; potential_scaling_factor=1.0; N=-1")
-        f = _write_input_file(tmp_path, text)
-        with pytest.raises(ValueError, match="must be >= 0"):
-            read_input(f)
-
-    def test_raises_on_non_integer_upper_level_to_compute(self, tmp_path):
-        """
-        Verify that non-integer (the_upper_level_to_compute)
-        raises an error. Expecting a ValueError
-        """
-        text = _make_input_text(header2="E0=-1.0; corr-ZPVE0=0.01; potential_scaling_factor=1.0; N=0.5")
-        f = _write_input_file(tmp_path, text)
-        with pytest.raises(ValueError, match="must be an integer"):
-            read_input(f)
-    
-    def test_raises_on_non_positive_T_arrhenius_min(self, tmp_path):
-        """
-        Verify that a non-positive T_arrhenius_min
-        raises an error. Expecting a ValueError
-        """
-        text = _make_input_text(header3="T_arrhenius_min=0.0; T_arrhenius_max=400.0; "
-                                "T_step=10.0; tunn_prob_aver=3")
-        f = _write_input_file(tmp_path, text)
-        with pytest.raises(ValueError, match="must be > 0"):
-            read_input(f)
-
-    def test_raises_on_non_positive_T_arrhenius_max(self, tmp_path):
-        """ Verify that a non-positive T_arrhenius_max raises an error. Expecting a ValueError """
-        text = _make_input_text(header3="T_arrhenius_min=200.0; T_arrhenius_max=0.0; "
-                                "T_step=10.0; tunn_prob_aver=2")
-        f = _write_input_file(tmp_path, text)
-        with pytest.raises(ValueError, match="must be > 0"):
-            read_input(f)
-
-    def test_raises_on_non_positive_T_step(self, tmp_path):
-        """ Verify that a non-positive T_step raises an error. Expecting a ValueError """
-        text = _make_input_text(header3="T_arrhenius_min=200.0; T_arrhenius_max=400.0; "
-                                "T_step=0.0; tunn_prob_aver=1")
-        f = _write_input_file(tmp_path, text)
-        with pytest.raises(ValueError, match="must be > 0"):
-            read_input(f)
-
-    def test_raises_when_T_arrhenius_min_greater_than_max(self, tmp_path):
-        """
-        Verify that an error is raised when T_arrhenius_min
-        exceeds T_arrhenius_max. Expecting a ValueError
-        """
-        text = _make_input_text(header3="T_arrhenius_min=500.0; T_arrhenius_max=400.0; "
-                                "T_step=10.0; tunn_prob_aver=1")
-        f = _write_input_file(tmp_path, text)
-        with pytest.raises(ValueError, match="cannot be >="):
-            read_input(f)
-
-    def test_raises_when_initial_irc_values_differ(self, tmp_path):
-        """
-        Verify that an error is raised when the E and ZPVE blocks
-        start at different IRC values. Expecting a ValueError
-        """
-        e_block = ["IRC; E", "-1.0; -10.0", "0.0; -9.5", "1.0; -10.0", "END; E"]
-        zpve_block = ["IRC; ZPVE", "-2.0; 0.01", "0.0; 0.02", "1.0; 0.01", "END; ZPVE"]
-        text = _make_input_text(e_block=e_block, zpve_block=zpve_block)
-        f = _write_input_file(tmp_path, text)
-        with pytest.raises(ValueError, match="Initial IRC values"):
-            read_input(f)
-
-    def test_raises_when_final_irc_values_differ(self, tmp_path):
-        """
-        Verify that an error is raised when the E and ZPVE blocks
-        end at different IRC values. Expecting a ValueError
-        """
-        e_block = ["IRC; E", "-1.0; -10.0", "0.0; -9.5", "1.0; -10.0", "END; E"]
-        zpve_block = ["IRC; ZPVE", "-1.0; 0.01", "0.0; 0.02", "2.0; 0.01", "END; ZPVE"]
-        text = _make_input_text(e_block=e_block, zpve_block=zpve_block)
-        f = _write_input_file(tmp_path, text)
-        with pytest.raises(ValueError, match="Final IRC values"):
-            read_input(f)
-
-    def test_negative_non_integer_N_raises_non_negative_error(self, tmp_path):
-        """ Verify that for a negative, non-integer N raises an error. Expecting a ValueError """
-        text = _make_input_text(header2="E0=-1.0; corr-ZPVE0=0.01; potential_scaling_factor=1.0; N=-0.5")
-        f = _write_input_file(tmp_path, text)
-        with pytest.raises(ValueError, match="must be >= 0"):
-            read_input(f)
-
-    def test_raises_on_unknown_numeric_code(self, tmp_path):
-        """ Verify that a numeric code outside {1, 2, 3} raises an error. Expecting a ValueError """
-        text = _make_input_text(header3="T_arrhenius_min=200.0; T_arrhenius_max=400.0; "
-                                         "T_step=10.0; tunn_prob_aver=4")
-        f = _write_input_file(tmp_path, text)
-        with pytest.raises(ValueError, match="temperature averaging mode"):
-            read_input(f)
-
-    def test_raises_on_non_integer_code(self, tmp_path):
-        """
-        Verify that a non-integer numeric value for the mode code
-        raises an error. Expecting a ValueError
-        """
-        text = _make_input_text(header3="T_arrhenius_min=200.0; T_arrhenius_max=400.0; "
-                                         "T_step=10.0; tunn_prob_aver=1.5")
-        f = _write_input_file(tmp_path, text)
-        with pytest.raises(ValueError, match="temperature averaging mode"):
+        f = _write_input_file(tmp_path, _make_input_text(**text_kwargs))
+        with pytest.raises(ValueError, match=match):
             read_input(f)

@@ -379,30 +379,6 @@ class TestPatternMassLinesAndValues:
         assert m is None, f"expected {None}, got {m}"
 
 # ============================================================================
-# --- PATTERN_IRC_POINT_REACT_PROD_GEOMETRY - match and no match ---
-# ============================================================================
-class TestPatternIrcPointReactProdGeometry:
-
-    P = gaussian_patterns.PATTERN_IRC_POINT_REACT_PROD_GEOMETRY
-
-    def test_matches_end_of_projected_freq_marker(self):
-        """ Tests that the corresponding marker is matched """
-        line = "**** End of Projected Frequency Analysis ****"
-        m = self.P.search(line)
-        assert m is not None, f"expected not {None}, got {m}"
-
-    def test_no_match_for_similar_but_wrong_text(self):
-        """ Tests that a similar but incomplete marker is not matched """
-        m = self.P.search("End of Projected Frequency Analysis")
-        assert m is None, f"expected {None}, got {m}"
-
-    def test_no_match_for_blank(self):
-        """ Tests that a blank line is not matched """
-        m = self.P.search("")
-        assert m is None, f"expected {None}, got {m}"
-
-
-# ============================================================================
 # --- PATTERN_IRC_INPUT_ORIENTATION_BLOCK - match and no match ---
 # ============================================================================
 class TestPatternIrcInputOrientationBlock:

@@ -8,11 +8,11 @@ ANGSTROM_TO_BOHR_RADIUS,
 CM_M1_TO_HARTREE,
 CONVERSION_FACTOR_HESSIAN_VALUES)
 
-from tunnex_2.irc_computations.ancillary_functions.interface import setup_logger # type: ignore
+import logging
 
 
-# --- Defining the logging function ---
-logger = setup_logger()
+# --- The module logger (configured once by setup_logger() in main) ---
+logger = logging.getLogger(__name__)
 
 
 # --- Defining the function to correct the geometries according to their center of masses ---

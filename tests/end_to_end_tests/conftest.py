@@ -1,4 +1,7 @@
 # --- conftest for tests/end_to_end_tests/ ---
+import shutil
+import sys
+
 import pytest  # type: ignore
 
 
@@ -12,3 +15,12 @@ def pytest_addoption(parser):
 def update_golden(request) -> bool:
     """ True when the golden files should be (re)written instead of being compared """
     return request.config.getoption("--update-golden")
+
+
+@pytest.fixture(scope="module")
+def tunnex_cmd() -> list[str]:
+    """ The installed console command """
+    exe = shutil.which("tunnex_2")
+    if exe is not None:
+        return [exe]
+    return [sys.executable, "-c", "from tunnex_2.cli import cli; cli()"]

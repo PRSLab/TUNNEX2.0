@@ -19,11 +19,21 @@ class MaxLevelFilter(logging.Filter):
 
 
 # --- Defining the logging function ---
+PACKAGE_LOGGER_NAME = "tunnex_2"
+# Every module logs through logging.getLogger(__name__), so all of them are children of this logger
+
+
 def setup_logger(log_file="calculations_log.log"):
-    logger = logging.getLogger(__name__)
+    """
+    Configure the package logger once per run (called by main). The module loggers
+    propagate to it, so nothing is opened or written at import time
+    """
+    logger = logging.getLogger(PACKAGE_LOGGER_NAME)
     logger.setLevel(logging.DEBUG)
     logger.propagate = False # Should prevent log messages from propagating to parent loggers
-    logger.handlers.clear() # Should prevent duplicate messages if setup_logger() is called more than once
+    for handler in list(logger.handlers): # Should prevent duplicate messages and leaked open files
+        logger.removeHandler(handler)     # if setup_logger() is called more than once
+        handler.close()
 
     # --- File: DEBUG and above ---
     file_handler = logging.FileHandler(log_file)
@@ -52,8 +62,8 @@ def log_run_start(logger, calculation_path):
     logger.info("=" * 80)
 
 
-# --- Defining the logging function ---
-logger = setup_logger()
+# --- The module logger (configured once by setup_logger() in main) ---
+logger = logging.getLogger(__name__)
 
 
 # --- Defining the function which checks if the file exist ---
@@ -97,17 +107,22 @@ def _command_preparation(filename_in: str | Path, command_file: str | Path,
     return command
 
 
+# --- Defining the function to run a SLURM command and report its failure ---
+def _run_slurm_command(command: list[str], envr: dict[str, str], failure_header: str) -> subprocess.CompletedProcess:
+    try:
+        return subprocess.run(command, capture_output=True, text=True, check=True, env=envr)
+    except subprocess.CalledProcessError as e:
+        raise RuntimeError(f"{failure_header}:\n"
+                           f"  Return code: {e.returncode}\n"
+                           f"  stderr: {e.stderr.strip()}") from e
+
+
 # --- Defining the function to submit the job to SLURM ---
 def _submit_slurm_job(filename_in: str | Path, command: list[str], envr: dict[str, str]) -> str:
     
     # --- Submitting the job to SLURM ---
     path = Path(filename_in)
-    try:
-        result = subprocess.run(command, capture_output=True, text=True, check=True, env=envr)
-    except subprocess.CalledProcessError as e:
-        raise RuntimeError(f"Failed to submit job '{path}':\n"
-                           f"  Return code: {e.returncode}\n"
-                           f"  stderr: {e.stderr.strip()}") from e
+    result = _run_slurm_command(command, envr, f"Failed to submit job '{path}'")
 
     match = re.search(r"(?m)^Submitted batch job\s+(\d+)\s*$",result.stdout)
 
@@ -128,14 +143,7 @@ def _wait_for_slurm_job(job_id: str, envr: dict[str, str], time_wait_seconds: fl
     # a message would appear once per minute) ---
     i = 0
     while True:
-        try:
-            result = subprocess.run(["squeue", "-h", "-j", job_id],
-                                    capture_output=True, text=True,
-                                    check=True, env=envr)
-        except subprocess.CalledProcessError as e:
-            raise RuntimeError(f"Failed squeue for job {job_id}:\n"
-                               f"  Return code: {e.returncode}\n"
-                               f"  stderr: {e.stderr.strip()}") from e
+        result = _run_slurm_command(["squeue", "-h", "-j", job_id], envr, f"Failed squeue for job {job_id}")
 
         if i % log_interval == 0:
             logger.info('Waiting for a job %s to be finished...', job_id)
@@ -153,13 +161,8 @@ def _check_slurm_job(job_id: str, envr: dict[str, str]) -> None:
     if not job_id.isdigit():
         raise ValueError(f"Invalid SLURM job ID: {job_id!r}")
     
-    try:
-        result = subprocess.run(["sacct", "-j", job_id, "--format=State,ExitCode", "--noheader", "--parsable2"],
-                                capture_output=True, text=True, check=True, env=envr)
-    except subprocess.CalledProcessError as e:
-        raise RuntimeError(f"sacct failed for job {job_id}:\n"
-            f"  Return code: {e.returncode}\n"
-            f"  stderr: {e.stderr.strip()}") from e
+    result = _run_slurm_command(["sacct", "-j", job_id, "--format=State,ExitCode", "--noheader", "--parsable2"],
+                                envr, f"sacct failed for job {job_id}")
 
     lines = result.stdout.strip().splitlines()
 
@@ -268,20 +271,8 @@ def orca_error_check(filename: str | Path) -> None:
         return # None
 
 
-# --- It was needed to test the PRIRODA run ---
-# env = os.environ.copy()
-# env["PATH"] = r"C:\cygwin64\bin;" + env["PATH"]
-# filename_in = r"cp_1\min.in"
-# command_file = r"cp_1\sett.in"
-# filename_out = r"cp_1\min1.out"
-# run_software(filename_in, command_file, filename_out, slurm_key=False, envr=env)
-# --- Reference (PRIRODA): Laikov, D. N., & Ustynyuk, Y. A., Russ. Chem. Bull., 54(3), 820-826 (2005). ---
-
-
-# --- It was needed to test the SLURM computations ---
-# filename_in = r"cp_1\min.in"
-# command_file = r"cp_1\sett.in"
-# run_software(filename_in, command_file, filename_out=None, slurm_key=True, envr=env, time_wait_seconds=10, log_interval=6)
-# --- Reference (SLURM): Yoo, A. B., Jette, M. A., & Grondona, M.
+# --- References for the external programs that run_software was tested with ---
+# PRIRODA: Laikov, D. N., & Ustynyuk, Y. A., Russ. Chem. Bull., 54(3), 820-826 (2005).
+# SLURM: Yoo, A. B., Jette, M. A., & Grondona, M.
 # In Workshop on job scheduling strategies for parallel processing (pp. 44-60).
-# Berlin, Heidelberg: Springer Berlin Heidelberg (2003, June). ---
+# Berlin, Heidelberg: Springer Berlin Heidelberg (2003, June).

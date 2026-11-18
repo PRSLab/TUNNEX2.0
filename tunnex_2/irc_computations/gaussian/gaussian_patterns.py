@@ -64,9 +64,6 @@ PATTERN_MASS_LINES_AND_VALUES = re.compile(r"(Atom\s+\d+\s+has atomic number\s+\
 # ============================================================================
 # --- IRC output file parsing ---
 # ============================================================================
-PATTERN_IRC_POINT_REACT_PROD_GEOMETRY = re.compile(r"\*{4}\s+End of Projected Frequency Analysis\s+\*{4}")
-# This pattern opens the geometry table in the IRC output file.
-# It was designed to find the last geometry at each IRC end (reactant and product) but is not used anywhere now
 PATTERN_IRC_INPUT_ORIENTATION_BLOCK = re.compile(r'Input orientation:\s*.*?\n\s*-{5,}\s*\n\s*Distance matrix', re.DOTALL)
 # It searches for the transition state geometry in the IRC file (it is the first 'Input orientation' block)
 PATTERN_IRC_CURRENT_STRUCTURE_BLOCK = re.compile(
